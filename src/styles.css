@@ -239,3 +239,39 @@
   font-weight: 900;
   font-style: italic;
 }
+
+@tailwind utilities;
+
+@layer utilities {
+  .neon-text {
+    text-shadow: 0 0 10px #00f6ff, 0 0 20px #00f6ff, 0 0 40px #00f6ff;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 2s ease forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 2s ease 0.5s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
