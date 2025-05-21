@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import * as THREE from 'three';
 import {createNoise3D } from 'simplex-noise';
-import { AfterViewInit, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { PlatformService } from '../../../core/services/platform.service';
 
 @Component({
   selector: 'app-three-background',
@@ -12,14 +12,12 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class ThreeBackgroundComponent implements AfterViewInit {
   @ViewChild('bgCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(platformId);
-  }
+   constructor(private platformService: PlatformService) {}
+
 
   ngAfterViewInit() {
-    if (!this.isBrowser) return;
+    if (!this.platformService.isBrowser) return;
 
     const canvas = this.canvasRef.nativeElement;
       // Initialize scene
@@ -317,7 +315,6 @@ export class ThreeBackgroundComponent implements AfterViewInit {
 
       const time = performance.now() * 0.001; // convert to seconds
 
-      // Update particle shader time uniform
       // Update particle shader time uniform
       particleMaterial.uniforms['time'].value = time;
       gridMaterial.uniforms['time'].value = time;

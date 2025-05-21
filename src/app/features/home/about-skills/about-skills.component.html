@@ -1,0 +1,194 @@
+<!-- about-me.component.html -->
+<div
+  #container
+  class="relative min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 overflow-hidden"
+>
+<app-three-background-about></app-three-background-about>
+  <div
+    class="relative z-10 p-4 md:p-8 max-w-5xl mx-auto text-white min-h-screen"
+  >
+    <div
+      class="glassmorphism p-6  rounded-3xl backdrop-blur-md  bg-opacity-5 border border-gray-700 shadow-2xl"
+    >
+      <h2
+        class="text-4xl md:text-6xl font-bold mb-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
+      >
+        About Me
+      </h2>
+
+      <div class="flex flex-col gap-6">
+        <div
+          *ngFor="let section of sections"
+          class="section-card transition-all duration-500 ease-out rounded-2xl overflow-hidden"
+          [ngClass]="{
+            'shadow-lg shadow-cyan-500/20': hoveredSection === section.id,
+            'shadow-xl': hoveredSection !== section.id
+          }"
+          (mouseenter)="setHoveredSection(section.id)"
+          (mouseleave)="setHoveredSection(null)"
+        >
+          <div
+            (click)="toggleSection(section.id)"
+            class="flex items-center justify-between p-5 cursor-pointer select-none transition-colors duration-300"
+            [ngClass]="{
+              'bg-gradient-to-r from-blue-900/70 to-cyan-900/70 text-white':
+                openSection === section.id,
+              'bg-gradient-to-r from-gray-800/80 to-gray-900/80 text-cyan-300':
+                hoveredSection === section.id && openSection !== section.id,
+              'bg-gradient-to-r from-gray-800/50 to-gray-900/50 text-gray-100':
+                hoveredSection !== section.id && openSection !== section.id
+            }"
+          >
+            <div class="flex items-center gap-4">
+              <lucide-angular
+                [name]="section.icon"
+                class="w-6 h-6 transition-colors duration-300"
+                [class.text-cyan-300]="openSection === section.id"
+                [class.text-cyan-400]="
+                  hoveredSection === section.id && openSection !== section.id
+                "
+                [class.text-gray-400]="
+                  hoveredSection !== section.id && openSection !== section.id
+                "
+              ></lucide-angular>
+              <h3 class="text-xl font-semibold">{{ section.title }}</h3>
+            </div>
+
+            <div
+              class="w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300"
+              [class.bg-cyan-500]="openSection === section.id"
+              [class.text-gray-900]="openSection === section.id"
+              [class.rotate-180]="openSection === section.id"
+              [class.bg-gray-700]="
+                hoveredSection === section.id || openSection !== section.id
+              "
+              [class.text-cyan-300]="
+                hoveredSection === section.id && openSection !== section.id
+              "
+              [class.text-gray-300]="
+                hoveredSection !== section.id && openSection !== section.id
+              "
+            >
+              <svg
+                class="w-4 h-4 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div
+            *ngIf="openSection === section.id"
+            class="section-content-{{
+              section.id
+            }} bg-gray-800/40 backdrop-blur-sm border-t border-gray-700"
+          >
+            <div
+              class="p-5 text-gray-200 leading-relaxed"
+              [innerHTML]="section.content"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16 flex justify-center">
+        <button
+          class="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-cyan-500/30 transition-all duration-300 flex items-center gap-2"
+        >
+          <lucide-angular name="camera" class="w-5 h-5"></lucide-angular>
+          <span>Connect With Me</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<section class="relative w-full py-16 px-6 lg:px-24 bg-gray-50">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+      My <span class="text-blue-600">Development Journey</span>
+    </h2>
+
+    <div class="relative">
+      <!~~ Timeline line ~~>
+      <div
+        class="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-400 to-blue-600 h-full z-0"
+      ></div>
+
+      <!~~ Timeline items ~~>
+      <div
+        *ngFor="let item of timeline; let i = index"
+        class="relative z-10 mb-16 flex flex-col md:flex-row items-center justify-center"
+        [ngClass]="{ 'md:flex-row-reverse': i % 2 !== 0 }"
+      >
+        <!~~ Content card ~~>
+        <div
+          class="w-full md:w-5/12 px-6 mb-6 md:mb-0 transform transition-all duration-500 hover:scale-105"
+          [ngClass]="{
+            'md:text-right md:pr-10': i % 2 === 0,
+            'md:text-left md:pl-10': i % 2 !== 0
+          }"
+        >
+          <div
+            class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-600"
+          >
+            <div class="flex items-center mb-2">
+              <div
+                class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+              >
+                <span class="text-blue-600 text-lg">{{ i + 1 }}</span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">
+                {{ item.title }}
+              </h3>
+            </div>
+            <p class="text-gray-600 mt-2">{{ item.description }}</p>
+            <div *ngIf="item.skills" class="mt-3">
+              <div class="text-sm text-gray-500 mb-1">Key Skills Gained:</div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  *ngFor="let skill of item.skills"
+                  class="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-full"
+                >
+                  {{ skill }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!~~ Timeline dot ~~>
+        <div
+          class="w-6 h-6 bg-blue-600 rounded-full border-4 border-white z-20 shadow-lg flex items-center justify-center"
+        >
+          <div *ngIf="item.icon" class="text-white text-sm">
+            <i [class]="item.icon"></i>
+          </div>
+        </div>
+
+        <!~~ Date ~~>
+        <div
+          class="w-full md:w-5/12 px-6 text-center md:text-left"
+          [ngClass]="{
+            'md:text-right': i % 2 === 0,
+            'md:text-left': i % 2 !== 0
+          }"
+        >
+          <div class="text-gray-400 font-medium">{{ item.date }}</div>
+          <div *ngIf="item.subtitle" class="text-sm text-gray-500 mt-1">
+            {{ item.subtitle }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
