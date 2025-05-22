@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { Camera, Code2, Briefcase, User, Home, Database, Server, Code, Cpu, FileCode, Zap, ArrowBigRight, Atom, Box, Brush, Cloud, CloudCog, CloudLightning, CloudSun, Film, GitBranch, Github, Globe, Layout, MessageCircleMore, Move3D, Palette, PlugZap, Send, ServerCog, ServerCrash, ShieldCheck, Sparkles, SquareStack } from 'lucide-angular';
+import { Camera, Code2, Briefcase, User, Home, Database, Server, Code, Cpu, FileCode, Zap, ArrowBigRight, Atom, Box, Brush, Cloud, CloudCog, CloudLightning, CloudSun, Film, GitBranch, Github, Globe, Layout, MessageCircleMore, Move3D, Palette, PlugZap, Send, ServerCog, ServerCrash, ShieldCheck, Sparkles, SquareStack,Layers,ServerCogIcon,Puzzle, Brain } from 'lucide-angular';
 import { LucideAngularModule } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -19,7 +19,7 @@ importProvidersFrom(
     Box, ServerCog, GitBranch, Github, Globe, // Docker/Nginx/Git/GitHub/DNS
     PlugZap, Send, MessageCircleMore,         // Socket.IO/Nodemailer/WhatsApp API
     Move3D, Sparkles, Film, ServerCrash, // GSAP/Tsparticles/Three.js/Angular Animations/SSR
-    Atom, ArrowBigRight, ShieldCheck,SquareStack          // React/Next.js/NestJS
+    Atom, ArrowBigRight, ShieldCheck,SquareStack ,Layers,ServerCogIcon,Puzzle,Brain         // React/Next.js/NestJS
   })
 )  ]
 };
