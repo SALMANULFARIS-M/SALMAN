@@ -1,0 +1,27 @@
+<div class="skills-container px-4 py-10 md:py-16">
+  <h2 class="section-title text-3xl md:text-4xl font-bold mb-10 text-center">💡 Skills</h2>
+
+  <div *ngFor="let group of skillsGroups" class="mb-10">
+    <h3 class="text-xl md:text-2xl font-semibold mb-6 text-yellow-400 tracking-wide">{{ group.title }}</h3>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        class="skill-card bg-gray-900 bg-opacity-50 p-4 rounded-2xl shadow-xl transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-yellow-500/20"
+        *ngFor="let skill of group.skills; let i = index"
+        [attr.data-skill]="skill.name"
+      >
+        <div class="flex items-center space-x-4 mb-3">
+          <lucide-icon [name]="skill.icon" class="w-6 h-6 text-yellow-400"></lucide-icon>
+          <span class="text-lg font-medium text-white">{{ skill.name }}</span>
+        </div>
+        <div class="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
+          <div
+            class="skill-bar h-full rounded-full transition-all duration-1000 ease-out"
+            [ngStyle]="{ width: skill.level + '%', background: 'linear-gradient(to right, #facc15, #fcd34d)' }"
+          ></div>
+        </div>
+        <div class="text-right text-sm text-gray-400 mt-1">{{ skill.level }}%</div>
+      </div>
+    </div>
+  </div>
+</div>
