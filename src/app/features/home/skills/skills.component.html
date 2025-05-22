@@ -4,15 +4,15 @@
   class="relative w-full max-h-screen md:h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
 >
   <!-- Animated background particles -->
-  <canvas
-    #particlesCanvas
-    class="absolute inset-0 w-full h-full pointer-events-none"
-  ></canvas>
+  <app-three-background-skills></app-three-background-skills>
 
   <!-- Grid overlay -->
   <div class="absolute inset-0 opacity-10">
     <div class="grid grid-cols-20 grid-rows-20 h-full">
-      <div *ngFor="let _ of [].constructor(400)" class="border-r border-b border-cyan-500/20"></div>
+      <div
+        *ngFor="let _ of [].constructor(400)"
+        class="border-r border-b border-cyan-500/20"
+      ></div>
     </div>
   </div>
 
@@ -21,31 +21,45 @@
     <!-- Header -->
     <div class="text-center mb-6 md:mb-8">
       <div class="inline-flex items-center space-x-3 mb-4">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
-          <lucide-icon icon="brain" class="w-6 h-6 text-white"></lucide-icon>
+        <div
+          class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center"
+        >
+          <lucide-angular
+            name="brain"
+            class="w-6 h-6 text-white"
+          ></lucide-angular>
         </div>
-        <h2 class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+        <h2
+          class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-transparent"
+        >
           Neural Skills Matrix
         </h2>
       </div>
       <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto">
-        Advanced competency mapping through quantum-enhanced skill assessment protocols
+        Advanced competency mapping through quantum-enhanced skill assessment
+        protocols
       </p>
     </div>
 
     <!-- Group selector -->
     <div class="flex justify-center mb-6 md:mb-8">
-      <div class="flex space-x-2 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50">
+      <div
+        class="flex space-x-2 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50"
+      >
         <button
           *ngFor="let group of skillsGroups; let i = index"
           (click)="setActiveGroup(i)"
           class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300"
-          [class]="activeGroup === i
-            ? 'bg-gradient-to-r ' + group.color + ' text-white shadow-lg transform scale-105'
-            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'"
+          [class]="
+            activeGroup === i
+              ? 'bg-gradient-to-r ' +
+                group.color +
+                ' text-white shadow-lg transform scale-105'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+          "
         >
-          <lucide-icon [icon]="group.icon" class="w-6 h-6"></lucide-icon>
-          <span class="hidden md:inline font-medium">{{group.title}}</span>
+          <lucide-angular [name]="group.icon" class="w-6 h-6"></lucide-angular>
+          <span class="hidden md:inline font-medium">{{ group.title }}</span>
         </button>
       </div>
     </div>
@@ -54,55 +68,90 @@
     <div class="flex-1 overflow-y-auto scrollbar-hide">
       <div class="max-w-6xl mx-auto">
         <div class="mb-6">
-          <h3 class="text-xl md:text-2xl font-bold mb-6 flex items-center space-x-3"
-              [class]="'bg-gradient-to-r ' + getActiveGroup().color + ' bg-clip-text text-transparent'">
-            <lucide-icon [icon]="getActiveGroup().icon" class="w-6 h-6"></lucide-icon>
-            <span>{{getActiveGroup().title}}</span>
+          <h3
+            class="text-xl md:text-2xl font-bold mb-6 flex items-center space-x-3"
+            [class]="
+              'bg-gradient-to-r ' +
+              getActiveGroup().color +
+              ' bg-clip-text text-transparent'
+            "
+          >
+            <lucide-angular
+              [name]="getActiveGroup().icon"
+              class="w-6 h-6"
+            ></lucide-angular>
+            <span>{{ getActiveGroup().title }}</span>
           </h3>
 
-          <div class="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+          <div
+            class="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+          >
             <div
-              *ngFor="let skill of getActiveGroup().skills; let skillIndex = index"
+              *ngFor="
+                let skill of getActiveGroup().skills;
+                let skillIndex = index
+              "
               class="skill-card relative overflow-hidden rounded-2xl backdrop-blur-md border transition-all duration-500 transform hover:scale-105"
-              [class]="isSkillHovered(activeGroup, skillIndex)
-                ? 'border-cyan-400 shadow-2xl shadow-cyan-400/20 bg-slate-900/80'
-                : 'border-slate-700/50 hover:border-slate-600/70 bg-slate-900/40'"
+              [class]="
+                isSkillHovered(activeGroup, skillIndex)
+                  ? 'border-cyan-400 shadow-2xl shadow-cyan-400/20 bg-slate-900/80'
+                  : 'border-slate-700/50 hover:border-slate-600/70 bg-slate-900/40'
+              "
               (mouseenter)="setHoveredSkill(activeGroup + '-' + skillIndex)"
               (mouseleave)="setHoveredSkill(null)"
             >
               <!-- Holographic overlay -->
-              <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300"
+              ></div>
 
               <!-- Animated border glow -->
-              <div class="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"
-                   [class.animate-pulse]="isSkillHovered(activeGroup, skillIndex)">
-                <div class="absolute inset-0 rounded-2xl opacity-20 blur-sm"
-                     [class]="'bg-gradient-to-r ' + getActiveGroup().color"></div>
+              <div
+                class="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"
+                [class.animate-pulse]="isSkillHovered(activeGroup, skillIndex)"
+              >
+                <div
+                  class="absolute inset-0 rounded-2xl opacity-20 blur-sm"
+                  [class]="'bg-gradient-to-r ' + getActiveGroup().color"
+                ></div>
               </div>
 
               <div class="relative p-6">
                 <!-- Skill header -->
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center space-x-3">
-                    <div class="p-2 rounded-lg bg-opacity-20"
-                         [class]="'bg-gradient-to-r ' + getActiveGroup().color">
-                      <lucide-icon [icon]="skill.icon" class="w-5 h-5"></lucide-icon>
+                    <div
+                      class="p-2 rounded-lg bg-opacity-20"
+                      [class]="'bg-gradient-to-r ' + getActiveGroup().color"
+                    >
+                      <lucide-angular
+                        [name]="skill.icon"
+                        class="w-5 h-5"
+                      ></lucide-angular>
                     </div>
-                    <span class="text-lg font-semibold text-white">{{skill.name}}</span>
+                    <span class="text-lg font-semibold text-white">{{
+                      skill.name
+                    }}</span>
                   </div>
-                  <div class="text-sm font-mono text-cyan-400">{{skill.level}}%</div>
+                  <div class="text-sm font-mono text-cyan-400">
+                    {{ skill.level }}%
+                  </div>
                 </div>
 
                 <!-- Neural network progress bar -->
                 <div class="relative">
-                  <div class="w-full h-2 bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
+                  <div
+                    class="w-full h-2 bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm"
+                  >
                     <div
                       class="h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
                       [class]="'bg-gradient-to-r ' + getActiveGroup().color"
                       [style.width]="skill.level + '%'"
                     >
                       <!-- Animated shine effect -->
-                      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"></div>
+                      <div
+                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"
+                      ></div>
                     </div>
                   </div>
 
@@ -111,9 +160,11 @@
                     <div
                       *ngFor="let _ of [].constructor(5); let i = index"
                       class="w-1 h-1 rounded-full transition-all duration-300"
-                      [class]="i < Math.floor(skill.level / 20)
-                        ? 'bg-gradient-to-r ' + getActiveGroup().color
-                        : 'bg-slate-700'"
+                      [class]="
+                        i < Math.floor(skill.level / 20)
+                          ? 'bg-gradient-to-r ' + getActiveGroup().color
+                          : 'bg-slate-700'
+                      "
                     ></div>
                   </div>
                 </div>
@@ -134,8 +185,16 @@
   </div>
 
   <!-- Corner decorations -->
-  <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-cyan-400 opacity-50"></div>
-  <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-cyan-400 opacity-50"></div>
-  <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-cyan-400 opacity-50"></div>
-  <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-cyan-400 opacity-50"></div>
+  <div
+    class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-cyan-400 opacity-50"
+  ></div>
+  <div
+    class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-cyan-400 opacity-50"
+  ></div>
+  <div
+    class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-cyan-400 opacity-50"
+  ></div>
+  <div
+    class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-cyan-400 opacity-50"
+  ></div>
 </div>

@@ -9,9 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class GsapAnimationService {
 
-  constructor() { if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-  } }
+  constructor() {
+    if (typeof window !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+  }
 
   /** Generic fade-up */
   fadeIn(selector: string, delay = 0, duration = 1): void {
@@ -55,69 +57,63 @@ export class GsapAnimationService {
     );
   }
 
-animateToggleContent(selector: string): void {
-  gsap.fromTo(
-    selector,
-    { autoAlpha: 0, y: 20 },
-    {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.5,
-      ease: 'power3.out',
-      clearProps: 'all',
-    }
-  );
-}
-
-animateToggleContentOut(selector: string): void {
-  gsap.to(selector, {
-    autoAlpha: 0,
-    y: 20,
-    duration: 0.4,
-    ease: 'power2.in',
-    onComplete: () => {
-      gsap.set(selector, { clearProps: 'all' });
-    },
-  });
-}
-
-
-
-staggerFadeInOnScroll(
-  targetSelector: string,
-  options: { y?: number; duration?: number; stagger?: number } = {}
-): void {
-  const { y = 50, duration = 1, stagger = 0.2 } = options;
-
-  const elements = gsap.utils.toArray(targetSelector);
-
-  if (!elements.length) {
-    console.warn('No elements found for selector:', targetSelector);
-    return;
+  animateToggleContent(selector: string): void {
+    gsap.fromTo(
+      selector,
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power3.out',
+        clearProps: 'all',
+      }
+    );
   }
 
-  elements.forEach((el: any, index: number) => {
-    gsap.from(el, {
-      opacity: 0,
-      y,
-      duration,
-      delay: index * stagger,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 90%',
-        toggleActions: 'play none none none',
-        onEnter: () => console.log('Triggered animation for:', el),
-        once: true // optional: animate only once
+  animateToggleContentOut(selector: string): void {
+    gsap.to(selector, {
+      autoAlpha: 0,
+      y: 20,
+      duration: 0.4,
+      ease: 'power2.in',
+      onComplete: () => {
+        gsap.set(selector, { clearProps: 'all' });
       },
     });
-  });
-}
+  }
 
+  staggerFadeInOnScroll(
+    targetSelector: string,
+    options: { y?: number; duration?: number; stagger?: number } = {}
+  ): void {
+    const { y = 50, duration = 1, stagger = 0.2 } = options;
 
-  /**
-   * Entry animation without scroll trigger — used for initial entry sections
-   */
+    const elements = gsap.utils.toArray(targetSelector);
+
+    if (!elements.length) {
+      console.warn('No elements found for selector:', targetSelector);
+      return;
+    }
+
+    elements.forEach((el: any, index: number) => {
+      gsap.from(el, {
+        opacity: 0,
+        y,
+        duration,
+        delay: index * stagger,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          onEnter: () => console.log('Triggered animation for:', el),
+          once: true // optional: animate only once
+        },
+      });
+    });
+  }
+
   staggerSectionCards(
     selector: string,
     options: { y?: number; duration?: number; stagger?: number } = {}
@@ -137,9 +133,6 @@ staggerFadeInOnScroll(
     );
   }
 
-  /**
-   * Generic single-element fade-in with optional delay
-   */
   fadeInElement(
     selector: string,
     options: { y?: number; duration?: number; delay?: number } = {}
@@ -157,6 +150,38 @@ staggerFadeInOnScroll(
         ease: 'power2.out',
       }
     );
+  }
+
+ animateCards(triggerClass: string = '.skill-card') {
+    gsap.from(triggerClass, {
+      scrollTrigger: triggerClass,
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.7)',
+    });
+  }
+
+  animateSkillBars(skillsGroups: any[]) {
+    skillsGroups.forEach((group, groupIdx) => {
+      group.skills.forEach((skill: any, skillIdx: number) => {
+        const selector = `.skill-bar-${groupIdx}-${skillIdx}`;
+        gsap.fromTo(
+          selector,
+          { width: '0%' },
+          {
+            width: `${skill.level}%`,
+            duration: 1.5,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: selector,
+              start: 'top 80%',
+            },
+          }
+        );
+      });
+    });
   }
 
 }

@@ -4,24 +4,23 @@ import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ThreeBackgroundSkillsComponent } from '../../../shared/animations/three-background-skills/three-background-skills.component';
+import { GsapAnimationService } from '../../../shared/animations/service/gsap-animation.service';
 
 @Component({
   selector: 'app-skills',
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, ThreeBackgroundSkillsComponent],
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SkillsComponent implements OnInit {
 
-  @ViewChild('particlesCanvas', { static: true }) particlesCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('sectionRef', { static: true }) sectionRef!: ElementRef<HTMLDivElement>;
 
   hoveredSkill: string | null = null;
   activeGroup = 0;
-  private animationFrameId!: number;
   public Math = Math;
-
 
   skillsGroups = [
     {
@@ -77,114 +76,13 @@ export class SkillsComponent implements OnInit {
   ];
 
 
-  constructor(private platformService: PlatformService) {
-  }
+  constructor(private platformService: PlatformService, private animationService: GsapAnimationService) { }
 
   ngOnInit() {
     if (this.platformService.isBrowser) {
-      this.createParticles();
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.from('.skill-card', {
-        scrollTrigger: '.skill-card',
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'back.out(1.7)'
-      });
-
-      // Animate bars when they enter viewport
-      this.skillsGroups.forEach((group, groupIdx) => {
-        group.skills.forEach((skill, skillIdx) => {
-          gsap.fromTo(
-            `.skill-bar-${groupIdx}-${skillIdx}`,
-            { width: '0%' },
-            {
-              width: `${skill.level}%`,
-              duration: 1.5,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: `.skill-bar-${groupIdx}-${skillIdx}`,
-                start: 'top 80%',
-              },
-            }
-          );
-        });
-      });
+      this.animationService.animateCards();
+      this.animationService.animateSkillBars(this.skillsGroups);
     }
-  }
-
-  ngOnDestroy() {
-    cancelAnimationFrame(this.animationFrameId);
-    window.removeEventListener('resize', this.handleResize);
-  }
-
-  private createParticles() {
-    const canvas = this.particlesCanvas.nativeElement;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const particles: Particle[] = [];
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 1,
-        opacity: Math.random() * 0.5 + 0.2
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach(particle => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(34, 211, 238, ${particle.opacity})`;
-        ctx.fill();
-      });
-
-      // Connect nearby particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(34, 211, 238, ${0.1 * (1 - distance / 100)})`;
-            ctx.stroke();
-          }
-        }
-      }
-
-      this.animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    this.handleResize = this.handleResize.bind(this);
-    window.addEventListener('resize', this.handleResize);
-  }
-
-  private handleResize() {
-    const canvas = this.particlesCanvas.nativeElement;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
   }
 
   setHoveredSkill(skill: string | null) {
@@ -204,11 +102,4 @@ export class SkillsComponent implements OnInit {
   }
 }
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
-}
+
