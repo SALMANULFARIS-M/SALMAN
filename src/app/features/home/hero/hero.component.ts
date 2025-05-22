@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { CommonModule } from '@angular/common';
 import { ThreeBackgroundComponent } from '../../../shared/animations/three-background/three-background.component';
 import { PlatformService } from '../../../core/services/platform.service';
+import { GsapAnimationService } from '../../../shared/animations/service/gsap-animation.service';
 
 
 @Component({
@@ -13,26 +14,20 @@ import { PlatformService } from '../../../core/services/platform.service';
 })
 export class HeroComponent implements AfterViewInit {
 
-  constructor(private platformService: PlatformService) {}
+  constructor(private platformService: PlatformService, private animationService: GsapAnimationService
+  ) { }
 
   ngOnInit() {
     if (this.platformService.isBrowser) {
-      gsap.from('.my-element', { opacity: 0, y: 50, duration: 1 });
+      this.animationService.fadeIn('.my-element');
     }
   }
 
 
   ngAfterViewInit(): void {
     if (this.platformService.isBrowser) {
-      gsap.fromTo('.hero-image',
-        { y: 50, opacity: 0 }, // FROM these values
-        {
-          y: 0, opacity: 1, duration: 1.2, delay: 0.5, ease: 'power2.out'
-        }) // TO these values
-      gsap.fromTo('.scroll-down-btn',
-        { y: 30, opacity: 0 }, // FROM these values
-        { y: 0, opacity: 1, duration: 1.2, delay: 0.5, ease: 'power2.out' } // TO these values
-      );
+      this.animationService.animateHeroElement('.hero-image', 0.5);
+      this.animationService.fadeInElement('.scroll-down-btn', { y: 30, delay: 0.5 });
 
     }
   }

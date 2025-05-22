@@ -27,3 +27,13 @@
 }
 
 /* Add other utility classes as needed */
+/* Initial state (for SSR) */
+.section-card-item {
+  opacity: 1;
+  transform: none;
+}
+
+/* Will be overridden by GSAP in browser */
+:host-context(.browser) .section-card-item {
+  opacity: 0;
+}

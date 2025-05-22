@@ -24,7 +24,6 @@ export class ThreeBackgroundAboutComponent implements OnInit, OnDestroy {
       this.animate();
       window.addEventListener('resize', this.onWindowResize);
     }
-
   }
 
   ngOnDestroy() {

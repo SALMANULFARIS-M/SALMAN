@@ -1,14 +1,15 @@
 <!-- about-me.component.html -->
 <div
   #container
-  class="relative min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 overflow-hidden"
+  class="relative min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 overflow-hidden flex items-center justify-center px-4"
 >
-<app-three-background-about></app-three-background-about>
+  <app-three-background-about></app-three-background-about>
+
   <div
-    class="relative z-10 p-4 md:p-8 max-w-5xl mx-auto text-white min-h-screen"
+    class="relative z-10 p-4  md:p-8 max-w-5xl mx-auto text-white "
   >
     <div
-      class="glassmorphism p-6  rounded-3xl backdrop-blur-md  bg-opacity-5 border border-gray-700 shadow-2xl"
+      class="gsap-fade glassmorphism p-6 my-auto rounded-3xl backdrop-blur-md bg-opacity-5 border border-gray-700 shadow-2xl"
     >
       <h2
         class="text-4xl md:text-6xl font-bold mb-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
@@ -16,10 +17,10 @@
         About Me
       </h2>
 
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6" #sectionContainer>
         <div
           *ngFor="let section of sections"
-          class="section-card transition-all duration-500 ease-out rounded-2xl overflow-hidden"
+          class="section-card transition-all duration-500 ease-out rounded-2xl overflow-hidden section-card-item"
           [ngClass]="{
             'shadow-lg shadow-cyan-500/20': hoveredSection === section.id,
             'shadow-xl': hoveredSection !== section.id
@@ -86,7 +87,7 @@
           </div>
 
           <div
-            *ngIf="openSection === section.id"
+            [class.hidden]="openSection !== section.id"
             class="section-content-{{
               section.id
             }} bg-gray-800/40 backdrop-blur-sm border-t border-gray-700"
@@ -109,6 +110,9 @@
     </div>
   </div>
 </div>
+<!-- <div class="absolute inset-0 z-0">
+  <div class="absolute inset-0 bg-[url('/me.jpg')] bg-cover bg-center opacity-50"></div>
+</div> -->
 
 <!--
 <section class="relative w-full py-16 px-6 lg:px-24 bg-gray-50">
