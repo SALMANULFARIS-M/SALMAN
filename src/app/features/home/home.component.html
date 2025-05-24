@@ -1,5 +1,50 @@
 
-<app-hero></app-hero>
+<!-- <app-hero></app-hero>
 <app-about-skills></app-about-skills>
-<app-skills></app-skills>
+<app-skills></app-skills> -->
 
+<!-- <main class="overflow-hidden h-screen w-screen relative">
+  <div #sectionsWrapper class="w-full h-screen">
+    <section id="hero" class="section"><app-hero /></section>
+    <section id="about" class="section"><app-about-skills /></section>
+    <section id="skills" class="section"><app-skills /></section>
+  </div>
+</main>
+<app-header (scrollToSection)="scrollToSectionById($event)"></app-header> -->
+<main class="overflow-hidden h-screen w-screen relative futuristic-ui">
+  <!-- Particle system canvas -->
+  <canvas #particlesCanvas class="fixed top-0 left-0 w-full h-full pointer-events-none"></canvas>
+  
+  <!-- Particle burst elements (for animation) -->
+  <div *ngFor="let i of [1,2,3,4,5]" class="particle-burst absolute rounded-full bg-cyan-400 w-4 h-4"></div>
+  
+  <!-- Hologram scroll indicator -->
+  <div class="hologram-scroll-indicator fixed right-6 top-0 w-1 h-10 bg-cyan-400 rounded-full opacity-80 mix-blend-screen"></div>
+  
+  <!-- Main content wrapper -->
+  <div #sectionsWrapper class="w-full h-screen transform-style-preserve-3d">
+    <!-- Hero section with futuristic elements -->
+    <section id="hero" class="section relative">
+      <app-hero></app-hero>
+      <div class="tech-orb absolute w-4 h-4 bg-blue-400 rounded-full opacity-30 mix-blend-screen top-1/4 left-1/4"></div>
+      <div class="tech-orb absolute w-6 h-6 bg-purple-400 rounded-full opacity-30 mix-blend-screen top-1/3 right-1/4"></div>
+    </section>
+    
+    <!-- About section -->
+    <section id="about" class="section">
+      <app-about-skills></app-about-skills>
+    </section>
+    
+    <!-- Skills section -->
+    <section id="skills" class="section">
+      <app-skills></app-skills>
+    </section>
+    
+    <!-- Contact section -->
+    <!-- <section id="contact" class="section">
+      <app-contact></app-contact>
+    </section> -->
+  </div>
+</main>
+
+<app-header (scrollToSection)="scrollToSectionById($event)"></app-header>

@@ -1,0 +1,43 @@
+/* Futuristic UI base styles */
+.futuristic-ui {
+  --chromatic-offset: 0px;
+  --hologram-color: rgba(100, 220, 255, 0.15);
+  
+  /* // Hologram effect */
+  .hologram-element {
+    box-shadow: 0 0 15px var(--hologram-color), 
+                0 0 30px var(--hologram-color) inset;
+    backdrop-filter: blur(2px);
+  }
+  
+  /* // Chromatic aberration effect */
+  .section {
+    filter: drop-shadow(calc(var(--chromatic-offset) * -1) 0 0 rgba(255,0,0,0.5))
+            drop-shadow(var(--chromatic-offset) 0 0 rgba(0,0,255,0.5));
+    transition: filter 0.3s ease-out;
+  }
+  
+  /* // Glow effects */
+  .glow-element {
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+  
+  /* // 3D perspective */
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  /* // Futuristic scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(100, 220, 255, 0.5);
+    border-radius: 4px;
+    &:hover {
+      background: rgba(100, 220, 255, 0.8);
+    }
+  }
+}
