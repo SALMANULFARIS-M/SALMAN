@@ -1,31 +1,31 @@
-<!-- futuristic-skills.component.html -->
 <div
   #sectionRef
-  class="relative w-full max-h-screen md:h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+  class="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+  role="region"
+  aria-label="Futuristic Neural Skills Section"
 >
-  <!-- Animated background particles -->
   <app-three-background-skills></app-three-background-skills>
 
   <!-- Grid overlay -->
-  <div class="absolute inset-0 opacity-10">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
     <div class="grid grid-cols-20 grid-rows-20 h-full">
       <div
-        *ngFor="let _ of [].constructor(400)"
+        *ngFor="let _ of gridArray; trackBy: trackByIndex"
         class="border-r border-b border-cyan-500/20"
       ></div>
     </div>
   </div>
 
   <!-- Main content -->
-  <div class="relative z-10 h-full flex flex-col p-4 md:p-8">
+  <section class="relative z-10 h-full flex flex-col p-4 sm:p-6 md:p-8 min-h-0">
     <!-- Header -->
-    <div class="text-center mb-6 md:mb-8">
+    <header class="head text-center mb-6 md:mb-8">
       <div class="inline-flex items-center space-x-3 mb-4">
         <div
           class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center"
         >
           <lucide-angular
-            name="brain"
+            name="Award"
             class="w-6 h-6 text-white"
           ></lucide-angular>
         </div>
@@ -39,41 +39,56 @@
         Advanced competency mapping through quantum-enhanced skill assessment
         protocols
       </p>
-    </div>
+    </header>
 
     <!-- Group selector -->
-    <div class="flex justify-center mb-6 md:mb-8">
+    <nav class="flex justify-center mb-6 md:mb-8" aria-label="Skill Categories">
       <div
-        class="flex space-x-2 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50"
+        class="flex flex-wrap gap-2 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50"
       >
         <button
           *ngFor="let group of skillsGroups; let i = index"
           (click)="setActiveGroup(i)"
+          click
           class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300"
-          [class]="
-            activeGroup === i
-              ? 'bg-gradient-to-r ' +
-                group.color +
-                ' text-white shadow-lg transform scale-105'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-          "
+          [ngClass]="{
+            'bg-gradient-to-r text-white shadow-lg scale-105':
+              activeGroup === i,
+            'text-slate-400 hover:text-white hover:bg-slate-800/50':
+              activeGroup !== i
+          }"
+          [class.bg-gradient-to-r]="activeGroup === i"
+          [class]="activeGroup === i ? group.color : ''"
+          [attr.aria-pressed]="activeGroup === i"
+          [attr.aria-label]="group.title"
         >
           <lucide-angular [name]="group.icon" class="w-6 h-6"></lucide-angular>
           <span class="hidden md:inline font-medium">{{ group.title }}</span>
         </button>
       </div>
-    </div>
+    </nav>
 
     <!-- Skills grid -->
-    <div class="flex-1 overflow-y-auto scrollbar-hide">
-      <div class="max-w-6xl mx-auto">
+    <div
+      class="flex-1 min-h-0 overflow-y-auto relative custom-scrollbar-container"
+      #scrollContainer
+      (scroll)="onScroll()"
+    >
+      <!-- Custom scrollbar track -->
+      <div class="custom-scrollbar-track">
+        <div
+          class="custom-scrollbar-fill glow"
+          [style.height.%]="scrollPercent"
+          
+        ></div>
+      </div>
+      <div class="max-w-6xl mx-auto px-2 md:px-4">
         <div class="mb-6">
           <h3
             class="text-xl md:text-2xl font-bold mb-6 flex items-center space-x-3"
-            [class]="
-              'bg-gradient-to-r ' +
+            [ngClass]="
               getActiveGroup().color +
-              ' bg-clip-text text-transparent'
+              ' bg-gradient-to-r bg-clip-text text-transparent'
             "
           >
             <lucide-angular
@@ -83,29 +98,30 @@
             <span>{{ getActiveGroup().title }}</span>
           </h3>
 
-          <div
-            class="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
-          >
+          <div class="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
             <div
               *ngFor="
                 let skill of getActiveGroup().skills;
                 let skillIndex = index
               "
+              #skillCard
               class="skill-card relative overflow-hidden rounded-2xl backdrop-blur-md border transition-all duration-500 transform hover:scale-105"
-              [class]="
-                isSkillHovered(activeGroup, skillIndex)
-                  ? 'border-cyan-400 shadow-2xl shadow-cyan-400/20 bg-slate-900/80'
-                  : 'border-slate-700/50 hover:border-slate-600/70 bg-slate-900/40'
-              "
-              (mouseenter)="setHoveredSkill(activeGroup + '-' + skillIndex)"
-              (mouseleave)="setHoveredSkill(null)"
+              [ngClass]="{
+                'border-cyan-400 shadow-2xl shadow-cyan-400/20 bg-slate-900/80':
+                  isSkillHovered(activeGroup, skillIndex),
+                'border-slate-700/50 hover:border-slate-600/70 bg-slate-900/40':
+                  !isSkillHovered(activeGroup, skillIndex)
+              }"
+              (mouseenter)="setHoveredSkill(activeGroup, skillIndex)"
+              (mouseleave)="setHoveredSkill(-1, -1)"
+              role="article"
+              attr.aria-label="{{ skill.name }}"
             >
-              <!-- Holographic overlay -->
               <div
                 class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300"
               ></div>
 
-              <!-- Animated border glow -->
+              <!-- Animated glow -->
               <div
                 class="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300"
                 [class.animate-pulse]="isSkillHovered(activeGroup, skillIndex)"
@@ -116,8 +132,8 @@
                 ></div>
               </div>
 
+              <!-- Skill content -->
               <div class="relative p-6">
-                <!-- Skill header -->
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center space-x-3">
                     <div
@@ -133,39 +149,45 @@
                       skill.name
                     }}</span>
                   </div>
-                  <div class="text-sm font-mono text-cyan-400">
+                  <div class="text-sm font-mono text-cyan-400" #skillValue>
                     {{ skill.level }}%
                   </div>
                 </div>
 
-                <!-- Neural network progress bar -->
+                <!-- Progress bar -->
                 <div class="relative">
                   <div
                     class="w-full h-2 bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm"
                   >
                     <div
-                      class="h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+                      class="h-full rounded-full relative overflow-hidden"
                       [class]="'bg-gradient-to-r ' + getActiveGroup().color"
-                      [style.width]="skill.level + '%'"
+                      [attr.data-skill-index]="skillIndex"
+                      #skillBar
                     >
-                      <!-- Animated shine effect -->
                       <div
                         class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"
                       ></div>
                     </div>
                   </div>
 
-                  <!-- Data flow indicators -->
                   <div class="flex justify-between mt-2">
-                    <div
-                      *ngFor="let _ of [].constructor(5); let i = index"
-                      class="w-1 h-1 rounded-full transition-all duration-300"
-                      [class]="
-                        i < Math.floor(skill.level / 20)
-                          ? 'bg-gradient-to-r ' + getActiveGroup().color
-                          : 'bg-slate-700'
+                    <ng-container
+                      *ngFor="
+                        let _ of dotsArray;
+                        let i = index;
+                        trackBy: trackByIndex
                       "
-                    ></div>
+                    >
+                      <div
+                        *ngIf="i < Math.floor(skill.level / 20)"
+                        class="w-1 h-1 rounded-full transition-all duration-300"
+                        [ngClass]="{
+                          'bg-slate-700': i >= Math.floor(skill.level / 20)
+                        }"
+                        [class]="'bg-gradient-to-r ' + getActiveGroup().color"
+                      ></div>
+                    </ng-container>
                   </div>
                 </div>
               </div>
@@ -176,13 +198,13 @@
     </div>
 
     <!-- Quantum indicator -->
-    <div class="text-center mt-4">
+    <footer class="text-center mt-4">
       <div class="inline-flex items-center space-x-2 text-xs text-slate-500">
         <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
         <span>Quantum Skills Engine • Active</span>
       </div>
-    </div>
-  </div>
+    </footer>
+  </section>
 
   <!-- Corner decorations -->
   <div

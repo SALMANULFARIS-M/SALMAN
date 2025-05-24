@@ -107,7 +107,6 @@ export class GsapAnimationService {
           trigger: el,
           start: 'top 90%',
           toggleActions: 'play none none none',
-          onEnter: () => console.log('Triggered animation for:', el),
           once: true // optional: animate only once
         },
       });
@@ -152,36 +151,34 @@ export class GsapAnimationService {
     );
   }
 
- animateCards(triggerClass: string = '.skill-card') {
-    gsap.from(triggerClass, {
-      scrollTrigger: triggerClass,
-      opacity: 0,
-      y: 50,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'back.out(1.7)',
+   animateSkillBar(barEl: HTMLElement, level: number) {
+    gsap.fromTo(
+      barEl,
+      { width: '0%' },
+      {
+        width: `${level}%`,
+        duration: 1.2,
+        ease: 'power2.out',
+        overwrite: true,
+      }
+    );
+  }
+
+  animateSkillValue(spanEl: HTMLElement, level: number) {
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: level,
+      duration: 1,
+      roundProps: 'val',
+      onUpdate: () => {
+        spanEl.textContent = `${obj.val}%`;
+      },
     });
   }
 
-  animateSkillBars(skillsGroups: any[]) {
-    skillsGroups.forEach((group, groupIdx) => {
-      group.skills.forEach((skill: any, skillIdx: number) => {
-        const selector = `.skill-bar-${groupIdx}-${skillIdx}`;
-        gsap.fromTo(
-          selector,
-          { width: '0%' },
-          {
-            width: `${skill.level}%`,
-            duration: 1.5,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: selector,
-              start: 'top 80%',
-            },
-          }
-        );
-      });
-    });
+  killAnimations(elements: HTMLElement[]) {
+    gsap.killTweensOf(elements);
   }
+
 
 }
