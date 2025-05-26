@@ -1,21 +1,19 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import {  Component, ComponentRef,  HostListener, ViewChild, ViewContainerRef } from '@angular/core';
 import { HeroComponent } from './hero/hero.component';
 import { AboutSkillsComponent } from './about-skills/about-skills.component';
 import { SkillsComponent } from './skills/skills.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderComponent } from '../../shared/components/header/header.component';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { CustomEase } from 'gsap/CustomEase';
-import { TextPlugin } from 'gsap/TextPlugin';
 import { CommonModule } from '@angular/common';
 import { PlatformService } from '../../core/services/platform.service';
+import { LucideAngularModule } from 'lucide-angular';
 
 gsap.registerPlugin(ScrollTrigger, CustomEase,);
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,],
+  imports: [CommonModule,LucideAngularModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -25,9 +23,9 @@ export class HomeComponent {
   container!: ViewContainerRef;
 
   sections = [
-    { name: 'hero', component: HeroComponent },
-    { name: 'about', component: AboutSkillsComponent },
-    { name: 'skills', component: SkillsComponent }
+    { name: 'hero',icon: 'home' , component: HeroComponent },
+    { name: 'about',icon: 'about', component: AboutSkillsComponent },
+    { name: 'skills', icon: 'skills', component: SkillsComponent }
   ];
 
   currentIndex = 0;
@@ -66,6 +64,7 @@ animateIn(el: HTMLElement) {
 
 
   navigateTo(index: number) {
+  this.currentIndex = index;
     if (index < 0 || index >= this.sections.length || this.isAnimating) return;
     this.isAnimating = true;
     const next = this.sections[index];
