@@ -3,10 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { BadgeCheck, LucideAngularModule, Mail } from 'lucide-angular';
+import { LucideAngularModule,  } from 'lucide-angular';
 
 // Lucide Icons
-import { Camera, Code2, Briefcase, User, Home, Database, Server, Code, Cpu, FileCode, Zap, ArrowBigRight, Atom, Box, Brush, Cloud, CloudCog, CloudLightning, CloudSun, Film, GitBranch, Github, Globe, Layout, MessageCircleMore, Move3D, Palette, PlugZap, Send, ServerCog, ServerCrash, ShieldCheck, Sparkles, SquareStack, Layers, ServerCogIcon, Puzzle, Brain, Award, Wrench, GitMerge, Network, PenTool } from 'lucide-angular';
+import { Camera,BadgeCheck,Mail, Code2, Briefcase, User, Home, Database, Server, Code, Cpu, FileCode, Zap, ArrowBigRight, Atom, Box, Brush, Cloud, CloudCog, CloudLightning, CloudSun, Film, GitBranch, Github, Globe, Layout, MessageCircleMore, Move3D, Palette, PlugZap, Send, ServerCog, ServerCrash, ShieldCheck, Sparkles, SquareStack, Layers, ServerCogIcon, Puzzle, Brain, Award, Wrench, GitMerge, Network, PenTool } from 'lucide-angular';
 
 const lucideIcons = {
   Camera, Code2, Briefcase, User, Home, Database, Server, Code, Cpu, FileCode, Zap,

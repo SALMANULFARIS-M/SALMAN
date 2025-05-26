@@ -1,7 +1,5 @@
-<!-- Scroll Sections -->
-
 <div class="relative h-screen w-screen overflow-hidden bg-black text-white">
-  <!-- Dynamic Section Container -->
+  <!-- Dynamic Section -->
   <ng-template #container></ng-template>
 
   <!-- Loading Spinner -->
@@ -13,39 +11,21 @@
       class="w-12 h-12 border-4 border-t-white border-white/30 rounded-full animate-spin"
     ></div>
   </div>
-  <!-- Navigation Icons with Bubble -->
-  <div
-    class="fixed right-6 top-1/2 -translate-y-1/2 z-50 h-[240px] w-14 flex flex-col items-center justify-center overflow-hidden"
-  >
-    <!-- Fixed Bubble -->
-    <div
-      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-lg border border-white/20 pointer-events-none"
-    ></div>
 
-    <!-- Icon Container that Moves -->
-    <div
-      class="transition-transform duration-500 ease-in-out"
-      [style.transform]="'translateY(-' + currentIndex * 60 + 'px)'"
-    >
-      <ng-container *ngFor="let section of sections; let i = index">
-        <button
-          (click)="navigateTo(i)"
-          class="w-12 h-12 flex items-center justify-center text-white/50 transition-colors duration-300"
-          [ngClass]="{ '!text-white': currentIndex === i }"
-        >
-          <ng-container [ngSwitch]="section.icon">
-            <lucide-icon *ngSwitchCase="'home'" name="home"></lucide-icon>
-            <lucide-icon *ngSwitchCase="'about'" name="user"></lucide-icon>
-            <lucide-icon
-              *ngSwitchCase="'skills'"
-              name="badge-check"
-            ></lucide-icon>
-            <lucide-icon *ngSwitchCase="'contact'" name="mail"></lucide-icon>
-          </ng-container>
-        </button>
-      </ng-container>
-    </div>
+  <!-- Navigation -->
+  <div
+    class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-4"
+  >
+    <ng-container *ngFor="let section of sections; let i = index">
+      <button
+        (click)="navigateTo(i)"
+        class="w-12 h-12 flex items-center justify-center rounded-full border border-white/30 bg-white/10 text-white/60 backdrop-blur transition-all duration-300 hover:scale-110 hover:text-white"
+        [ngClass]="{
+          '!bg-white !text-black scale-125 shadow-3xl ring ring-cyan-400': currentIndex === i
+        }"
+      >
+        <lucide-icon [name]="section.icon"></lucide-icon>
+      </button>
+    </ng-container>
   </div>
 </div>
-
-
