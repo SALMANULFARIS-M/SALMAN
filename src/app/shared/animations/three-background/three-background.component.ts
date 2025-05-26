@@ -25,10 +25,9 @@ export class ThreeBackgroundComponent implements AfterViewInit {
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 20;
 
-    const renderer = new THREE.WebGLRenderer({canvas, antialias: true });
+    const renderer = new THREE.WebGLRenderer({canvas, antialias: true,alpha: true  });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
 
     // Setup lights
     const ambientLight = new THREE.AmbientLight(0x222222);

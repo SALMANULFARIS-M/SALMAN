@@ -275,3 +275,22 @@
     }
   }
 }
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+
+
+
+/* Optional scrollbar hiding */
+::-webkit-scrollbar {
+  display: none;
+ -ms-overflow-style: none;
+  scrollbar-width: none;
+}

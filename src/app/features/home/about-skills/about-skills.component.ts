@@ -117,7 +117,7 @@ export class AboutSkillsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (!this.platformService.isBrowser) return;
-    this.animationService.fadeInOnScroll('.gsap-fade');
+    // this.animationService.fadeInOnScroll('.gsap-fade');
     this.initAnimations();
   }
   private initAnimations() {

@@ -8,10 +8,7 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent
   },
- {
-    path: 'a',
-    component: AboutSkillsComponent
-  },
+  { path: ':section', component: HomeComponent },
   {
     path: '**',
     redirectTo: '',
