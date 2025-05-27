@@ -1,4 +1,4 @@
-import {  Component, ComponentRef,  HostListener, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, HostListener, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { HeroComponent } from './hero/hero.component';
 import { AboutSkillsComponent } from './about-skills/about-skills.component';
 import { SkillsComponent } from './skills/skills.component';
@@ -16,21 +16,23 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 gsap.registerPlugin(ScrollTrigger, CustomEase,);
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,LucideAngularModule,HeaderComponent],
+  imports: [CommonModule, LucideAngularModule, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
+  validSections = ['about', 'skills', 'projects', 'contact'];
 
   sections = [
-    { name: 'Hero', icon: 'home', component: HeroComponent },
-    { name: 'About', icon: 'user', component: AboutSkillsComponent },
-    { name: 'Skills', icon: 'badge-check', component: SkillsComponent },
-    { name: 'Projects', icon: 'folderGit2', component: ProjectsComponent },
-    { name: 'Contact', icon: 'contact', component: ContactComponent },
+    { name: 'Hero', path: '', icon: 'home', component: HeroComponent },
+    { name: 'About', path: 'about', icon: 'user', component: AboutSkillsComponent },
+    { name: 'Skills', path: 'skills', icon: 'badge-check', component: SkillsComponent },
+    { name: 'Projects', path: 'projects', icon: 'folderGit2', component: ProjectsComponent },
+    { name: 'Contact', path: 'contact', icon: 'contact', component: ContactComponent },
   ];
+
 
   currentIndex = 0;
   isAnimating = false;
@@ -42,32 +44,53 @@ export class HomeComponent {
     private router: Router,
     private route: ActivatedRoute,
     private platformService: PlatformService
-  ) {}
+  ) { }
 
+  ngOnInit() {
+
+    const section = this.route.snapshot.paramMap.get('section');
+    if (section && !this.validSections.includes(section)) {
+      this.router.navigate(['/']);
+    }
+    this.route.paramMap.subscribe(params => {
+      const section = this.route.snapshot.paramMap.get('section') || '';
+      const index = this.sections.findIndex(s => s.path === section);
+
+
+      this.currentIndex = index !== -1 ? index : 0;
+
+      // Optionally scroll to the section
+      setTimeout(() => {
+        if (!this.platformService.isBrowser) return;
+        const el = document.getElementById(this.sections[this.currentIndex].name.toLowerCase());
+        el?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
   ngAfterViewInit(): void {
     if (this.platformService.isBrowser) {
-      const sectionName = this.route.snapshot.paramMap.get('section');
-      const index = this.sections.findIndex((s) => s.name === sectionName);
+      const section = this.route.snapshot.paramMap.get('section') || '';
+      const index = this.sections.findIndex(s => s.path === section);
       this.loadSection(index !== -1 ? index : 0);
     }
   }
 
-async loadSection(index: number) {
-  this.isLoading = true;
-  if (this.compRef) this.compRef.destroy();
+  async loadSection(index: number) {
+    this.isLoading = true;
+    if (this.compRef) this.compRef.destroy();
 
-  const component = this.sections[index].component as Type<any>;
-  this.compRef = this.container.createComponent(component);
+    const component = this.sections[index].component as Type<any>;
+    this.compRef = this.container.createComponent(component);
 
-  this.currentIndex = index;
+    this.currentIndex = index;
 
-  // Defer to next tick to ensure DOM is ready
-  setTimeout(() => {
-    const el = this.compRef.location.nativeElement;
-    if (el) this.animateIn(el);
-    this.isLoading = false;
-  }, 0);
-}
+    // Defer to next tick to ensure DOM is ready
+    setTimeout(() => {
+      const el = this.compRef.location.nativeElement;
+      if (el) this.animateIn(el);
+      this.isLoading = false;
+    }, 0);
+  }
 
 
   animateIn(el: HTMLElement) {
@@ -114,9 +137,8 @@ async loadSection(index: number) {
 
     this.isAnimating = true;
 
-    const next = this.sections[index];
     this.animateOut(this.compRef.location.nativeElement, () => {
-      this.router.navigate([next.name], { skipLocationChange: true });
+      this.router.navigate([this.sections[index].path], { skipLocationChange: true });
       this.loadSection(index).then(() => {
         this.isAnimating = false;
       });
