@@ -1,0 +1,26 @@
+.projects-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.projects-container::-webkit-scrollbar-thumb {
+  background-color: #facc15; /* yellow-400 */
+  border-radius: 10px;
+}
+
+.projects-container::-webkit-scrollbar-track {
+  background-color: #1f2937; /* gray-800 */
+}
+.btn {
+  background-color: #ca8a04; /* Tailwind bg-yellow-600 */
+  color: #fff; /* Tailwind text-white */
+  padding-left: 1rem; /* Tailwind px-4 */
+  padding-right: 1rem;
+  padding-top: 0.5rem; /* Tailwind py-2 */
+  padding-bottom: 0.5rem;
+  border-radius: 0.5rem; /* Tailwind rounded-lg */
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #a16207; /* Tailwind hover:bg-yellow-700 */
+}

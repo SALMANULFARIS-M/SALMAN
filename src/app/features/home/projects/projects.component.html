@@ -1,14 +1,41 @@
-<div class="projects-container py-16 px-4">
-  <h2 class="section-title text-4xl font-bold mb-12 text-center">🚀 Projects</h2>
+<div
+  class="projects-container py-16 px-4 min-h-screen max-h-screen overflow-y-auto bg-gray-900"
+>
+  <h2
+    class="section-title text-4xl font-bold mb-12 text-center text-yellow-400"
+  >
+    🚀 Projects
+  </h2>
 
-  <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+  <div class="flex justify-center gap-4 mb-10">
+    <button (click)="filter = 'all'" class="btn">All</button>
+    <button (click)="filter = 'live'" class="btn">Live</button>
+    <button (click)="filter = 'learning'" class="btn">Learning</button>
+    <button (click)="filter = 'backend'" class="btn">Backend</button>
+    <button (click)="filter = 'personal'" class="btn">Personal</button>
+  </div>
+
+  <div
+    class="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
+  >
     <div
       *ngFor="let project of projects"
-      class="project-card relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 shadow-lg transition-transform transform hover:scale-105 hover:shadow-yellow-500/20"
+      class="project-card relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 shadow-lg transition-transform transform hover:scale-105 hover:shadow-yellow-500/20 flex flex-col"
     >
-      <img [src]="project.image" alt="{{ project.title }}" class="rounded-xl mb-4 h-40 object-cover w-full shadow-md" />
-      <h3 class="text-xl text-yellow-400 font-semibold mb-2">{{ project.title }}</h3>
-      <p class="text-sm text-gray-300 mb-4">{{ project.description }}</p>
+      <img
+        *ngIf="project.image"
+        [src]="project.image"
+        [alt]="project.title"
+        class="rounded-xl mb-4 h-40 object-cover w-full shadow-md"
+      />
+
+      <h3 class="text-xl text-yellow-400 font-semibold mb-2">
+        {{ project.title }}
+      </h3>
+
+      <p class="text-sm text-gray-300 mb-4 flex-grow">
+        {{ project.description }}
+      </p>
 
       <div class="flex flex-wrap gap-2 mb-4">
         <span
@@ -20,9 +47,30 @@
       </div>
 
       <div class="flex justify-between items-center mt-auto">
-        <a [href]="project.live" target="_blank" class="text-sm text-green-400 hover:underline">🌐 Live</a>
-        <a [href]="project.github" target="_blank" class="text-sm text-blue-400 hover:underline">🧠 GitHub</a>
+        <a
+          *ngIf="project.live"
+          [href]="project.live"
+          target="_blank"
+          class="text-sm text-green-400 hover:underline"
+          >🌐 Live</a
+        >
+        <span *ngIf="!project.live" class="text-sm text-gray-600 italic">
+          No Live Demo
+        </span>
+
+        <a
+          *ngIf="project.github"
+          [href]="project.github"
+          target="_blank"
+          class="text-sm text-blue-400 hover:underline"
+          >🧠 GitHub</a
+        >
+        <span *ngIf="!project.github" class="text-sm text-gray-600 italic">
+          No GitHub Repo
+        </span>
       </div>
     </div>
   </div>
 </div>
+
+
