@@ -9,142 +9,27 @@ import { CustomEase } from 'gsap/CustomEase';
 import { CommonModule } from '@angular/common';
 import { PlatformService } from '../../core/services/platform.service';
 import { LucideAngularModule } from 'lucide-angular';
+import { ProjectsComponent } from './projects/projects.component';
+import { ContactComponent } from './contact/contact.component';
+import { HeaderComponent } from '../../shared/components/header/header.component';
 
 gsap.registerPlugin(ScrollTrigger, CustomEase,);
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,LucideAngularModule],
+  imports: [CommonModule,LucideAngularModule,HeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
-//   @ViewChild('container', { read: ViewContainerRef, static: true })
-//   container!: ViewContainerRef;
-
-//   sections = [
-//     { name: 'hero',icon: 'Home' , component: HeroComponent },
-//     { name: 'about',icon: 'User', component: AboutSkillsComponent },
-//     { name: 'skills', icon: 'badge-check', component: SkillsComponent }
-//   ];
-
-//   currentIndex = 0;
-//   isAnimating = false;
-//   isLoading = false;
-//   private compRef!: ComponentRef<any>;
-//   private touchStartY = 0;
-
-//   constructor(private router: Router, private route: ActivatedRoute, private platformService: PlatformService) { }
-
-//   ngAfterViewInit() {
-//   if (this.platformService.isBrowser) {
-//     const sectionName = this.route.snapshot.paramMap.get('section');
-//     const index = this.sections.findIndex(s => s.name === sectionName);
-//     this.currentIndex = index !== -1 ? index : 0;
-//     Promise.resolve().then(() => this.loadSection(this.currentIndex));
-//   }
-//   }
-//   async loadSection(index: number) {
-//     this.isLoading = true;
-//     if (this.compRef) this.compRef.destroy();
-//     const component = this.sections[index].component as import('@angular/core').Type<any>;
-//     this.compRef = this.container.createComponent(component);
-//     this.animateIn(this.compRef.location.nativeElement);
-//     this.isLoading = false;
-//   }
-// animateIn(el: HTMLElement) {
-//   gsap.fromTo(
-//     el,
-//     {
-//       opacity: 0,
-//       rotationX: -45,
-//       scale: 0.9,
-//       z: -100,
-//       filter: 'blur(12px)',
-//       transformPerspective: 1000,
-//     },
-//     {
-//       opacity: 1,
-//       rotationX: 0,
-//       scale: 1,
-//       z: 0,
-//       filter: 'blur(0px)',
-//       duration: 1.2,
-//       ease: 'expo.out',
-//     }
-//   );
-// }
-
-// animateOut(el: HTMLElement, done: () => void) {
-//   gsap.to(el, {
-//     opacity: 0,
-//     rotationX: 90,
-//     scale: 0.85,
-//     z: -150,
-//     filter: 'blur(10px)',
-//     duration: 1,
-//     ease: 'expo.in',
-//     onComplete: done,
-//   });
-// }
-
-
-
-// navigateTo(index: number) {
-//   if (index < 0 || index >= this.sections.length || this.isAnimating || index === this.currentIndex) return;
-//   this.isAnimating = true;
-
-//   const next = this.sections[index];
-//   this.animateOut(this.compRef.location.nativeElement, () => {
-//     this.router.navigate([next.name], { skipLocationChange: true });
-//     this.loadSection(index).then(() => {
-//       this.isAnimating = false;
-//     });
-//   });
-// }
-
-
-
-
-//   nextSection() {
-//     this.navigateTo(this.currentIndex + 1);
-//   }
-
-//   previousSection() {
-//     this.navigateTo(this.currentIndex - 1);
-//   }
-
-//   @HostListener('window:keydown', ['$event'])
-//   handleKey(e: KeyboardEvent) {
-//     if (e.key === 'ArrowDown') this.nextSection();
-//     else if (e.key === 'ArrowUp') this.previousSection();
-//   }
-
-//   @HostListener('wheel', ['$event'])
-//   handleWheel(e: WheelEvent) {
-//     if (e.deltaY > 0) this.nextSection();
-//     else this.previousSection();
-//   }
-
-//   @HostListener('touchstart', ['$event'])
-//   onTouchStart(e: TouchEvent) {
-//     this.touchStartY = e.touches[0].clientY;
-//   }
-
-//   @HostListener('touchend', ['$event'])
-//   onTouchEnd(e: TouchEvent) {
-//     const deltaY = e.changedTouches[0].clientY - this.touchStartY;
-//     if (deltaY > 50) this.previousSection();
-//     else if (deltaY < -50) this.nextSection();
-//   }
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 
   sections = [
-    { name: 'hero', icon: 'home', component: HeroComponent },
-
-    { name: 'about', icon: 'user', component: AboutSkillsComponent },
-    { name: 'skills', icon: 'badge-check', component: SkillsComponent },
+    { name: 'Hero', icon: 'home', component: HeroComponent },
+    { name: 'About', icon: 'user', component: AboutSkillsComponent },
+    { name: 'Skills', icon: 'badge-check', component: SkillsComponent },
+    { name: 'Projects', icon: 'folderGit2', component: ProjectsComponent },
+    { name: 'Contact', icon: 'contact', component: ContactComponent },
   ];
 
   currentIndex = 0;

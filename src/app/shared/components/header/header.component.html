@@ -1,7 +1,18 @@
-<nav>
-  <ul>
-    <li (click)="navigate('hero')">Home</li>
-    <li (click)="navigate('about')">About</li>
-    <li (click)="navigate('skills')">Skills</li>
-  </ul>
-</nav>
+<header>
+  <nav
+    class="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-4"
+  >
+    <ng-container *ngFor="let section of sections; let i = index">
+      <button
+        (click)="navigateTo(i)"
+        class="w-10 h-10 flex items-center justify-center rounded-full border border-white/30 bg-white/10 text-white/60 backdrop-blur transition-all duration-300 hover:scale-110 hover:text-white"
+        [ngClass]="{
+          '!bg-white !text-black scale-125 shadow-3xl ring ring-cyan-400':
+            currentIndex === i
+        }"
+      >
+        <lucide-icon [name]="section.icon"></lucide-icon>
+      </button>
+    </ng-container>
+  </nav>
+</header>
