@@ -47,7 +47,6 @@ export class HomeComponent {
   ) { }
 
   ngOnInit() {
-
     const section = this.route.snapshot.paramMap.get('section');
     if (section && !this.validSections.includes(section)) {
       this.router.navigate(['/']);
@@ -55,8 +54,6 @@ export class HomeComponent {
     this.route.paramMap.subscribe(params => {
       const section = this.route.snapshot.paramMap.get('section') || '';
       const index = this.sections.findIndex(s => s.path === section);
-
-
       this.currentIndex = index !== -1 ? index : 0;
 
       // Optionally scroll to the section
@@ -160,12 +157,27 @@ export class HomeComponent {
     else if (e.key === 'ArrowUp') this.previousSection();
   }
 
-  @HostListener('wheel', ['$event'])
-  handleWheel(e: WheelEvent) {
-    if (this.isAnimating) return;
-    if (e.deltaY > 0) this.nextSection();
-    else this.previousSection();
+@HostListener('wheel', ['$event'])
+handleWheel(e: WheelEvent) {
+  if (this.isAnimating) return;
+
+  // Check if the event target is a scrollable element
+  const target = e.target as HTMLElement;
+  const isScrollable = target.scrollHeight > target.clientHeight;
+
+  // If the target is scrollable and not at its scroll limits, don't navigate
+  if (isScrollable) {
+    const atTop = target.scrollTop === 0 && e.deltaY < 0;
+    const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight && e.deltaY > 0;
+
+    if (!(atTop || atBottom)) {
+      return;
+    }
   }
+
+  if (e.deltaY > 0) this.nextSection();
+  else this.previousSection();
+}
 
   @HostListener('touchstart', ['$event'])
   onTouchStart(e: TouchEvent) {
@@ -175,8 +187,8 @@ export class HomeComponent {
   @HostListener('touchend', ['$event'])
   onTouchEnd(e: TouchEvent) {
     const deltaY = e.changedTouches[0].clientY - this.touchStartY;
-    if (deltaY > 50) this.previousSection();
-    else if (deltaY < -50) this.nextSection();
+    if (deltaY > 70) this.previousSection();
+    else if (deltaY < -70) this.nextSection();
   }
 }
 
