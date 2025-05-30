@@ -39,6 +39,7 @@ export class HomeComponent {
   isLoading = false;
   private compRef!: ComponentRef<any>;
   private touchStartY = 0;
+  private touchTargetScrollable: HTMLElement | null = null;
 
   constructor(
     private router: Router,
@@ -157,39 +158,70 @@ export class HomeComponent {
     else if (e.key === 'ArrowUp') this.previousSection();
   }
 
-@HostListener('wheel', ['$event'])
-handleWheel(e: WheelEvent) {
-  if (this.isAnimating) return;
+  @HostListener('wheel', ['$event'])
+  handleWheel(e: WheelEvent) {
+    if (this.isAnimating) return;
 
-  // Check if the event target is a scrollable element
-  const target = e.target as HTMLElement;
-  const isScrollable = target.scrollHeight > target.clientHeight;
+    // Find the closest scrollable ancestor
+    let target = e.target as HTMLElement;
+    while (target && target !== document.body) {
+      const overflowY = getComputedStyle(target).overflowY;
+      const isScrollable = overflowY === 'auto' || overflowY === 'scroll';
+      if (isScrollable && target.scrollHeight > target.clientHeight) {
+        const atTop = target.scrollTop === 0 && e.deltaY < 0;
+        const atBottom =
+          target.scrollTop + target.clientHeight >= target.scrollHeight && e.deltaY > 0;
 
-  // If the target is scrollable and not at its scroll limits, don't navigate
-  if (isScrollable) {
-    const atTop = target.scrollTop === 0 && e.deltaY < 0;
-    const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight && e.deltaY > 0;
-
-    if (!(atTop || atBottom)) {
-      return;
+        // If not at edge, don't trigger section scroll
+        if (!atTop && !atBottom) {
+          return;
+        }
+        break;
+      }
+      target = target.parentElement as HTMLElement;
     }
-  }
 
-  if (e.deltaY > 0) this.nextSection();
-  else this.previousSection();
-}
+    // If we reached here, user is either not in a scrollable container, or at edge
+    if (e.deltaY > 0) this.nextSection();
+    else this.previousSection();
+  }
 
   @HostListener('touchstart', ['$event'])
   onTouchStart(e: TouchEvent) {
     this.touchStartY = e.touches[0].clientY;
+
+    // Traverse to find the scrollable ancestor
+    let target = e.target as HTMLElement;
+    this.touchTargetScrollable = null;
+
+    while (target && target !== document.body) {
+      if (target.classList.contains('scrollable-area')) {
+        this.touchTargetScrollable = target;
+        break;
+      }
+      target = target.parentElement as HTMLElement;
+    }
   }
 
   @HostListener('touchend', ['$event'])
   onTouchEnd(e: TouchEvent) {
     const deltaY = e.changedTouches[0].clientY - this.touchStartY;
+    // If user touched inside a scrollable area, check boundaries
+    if (this.touchTargetScrollable) {
+      const target = this.touchTargetScrollable;
+      const atTop = target.scrollTop === 0 && deltaY > 0;
+      const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight && deltaY < 0;
+
+      if (!(atTop || atBottom)) {
+        // Don't trigger section change
+        return;
+      }
+    }
+    // If not inside scrollable area or at scroll limit, navigate
     if (deltaY > 70) this.previousSection();
     else if (deltaY < -70) this.nextSection();
   }
+
 }
 
 
