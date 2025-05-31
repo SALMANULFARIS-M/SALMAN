@@ -1,8 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PlatformService } from '../../../core/services/platform.service';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+interface Project {
+  id: string;
+  title: string;
+  type: string;
+  status: string;
+  category: 'production' | 'learning';
+  description: string;
+  live?: string;
+  github?: string;
+  image?: string;
+  tech: string[];
+}
 
 @Component({
   selector: 'app-projects',
@@ -10,181 +21,363 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
+export class ProjectsComponent implements OnInit, AfterViewInit {
+  @ViewChildren('projectCard', { read: ElementRef }) projectCards!: QueryList<ElementRef>;
 
-export class ProjectsComponent {
+  activeCategory: 'production' | 'learning' = 'production';
+  activeSubFilter: string = 'frontend';
+  Math = Math;
+  readonly categories: ('production' | 'learning')[] = ['production', 'learning'];
 
-  constructor(private platformService: PlatformService) { }
-
-  filter = 'all';
-
-   projects = [
+  projects: Project[] = [
     {
+      id: '1',
       title: 'StudyInBengaluru',
-      type: 'live',
-      description: 'Angular SSR frontend and Node.js backend with MongoDB for StudyInBengaluru.',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Angular SSR frontend for StudyInBengaluru educational platform with modern UI/UX design.',
       live: 'https://studyinbengaluru.vercel.app',
       github: 'https://github.com/yourusername/studyinbengaluru-angular-ssr',
       image: 'assets/images/studyinbengaluru.png',
-      tech: ['Angular SSR', 'Node.js', 'MongoDB']
+      tech: ['Angular SSR', 'TypeScript', 'Tailwind CSS', 'RxJS']
     },
     {
-      title: 'KTM Demo Website',
-      type: 'learning',
-      description: 'Responsive layout practice using CSS Grid and Flexbox.',
-      live: 'https://your-ktm-demo.vercel.app',
-      github: 'https://github.com/yourusername/ktm-demo',
-      image: 'assets/images/ktm-demo.png',
-      tech: ['HTML', 'CSS Grid', 'Flexbox']
+      id: '2',
+      title: 'StudyInBengaluru API',
+      type: 'Backend',
+      status: 'Live',
+      category: 'production',
+      description: 'Robust Node.js backend with MongoDB for StudyInBengaluru platform, handling user management and course data.',
+      live: 'https://studyinbengaluru.render.com',
+      github: 'https://github.com/yourusername/studyinbengaluru-node-backend',
+      tech: ['Node.js', 'Express', 'MongoDB', 'JWT', 'Mongoose']
     },
     {
-      title: 'Talent4Startup Backend',
-      type: 'backend',
-      description: 'Node.js and Express backend for Talent4Startup platform.',
-      github: 'https://github.com/yourusername/talent4startup-backend',
-      tech: ['Node.js', 'Express', 'MongoDB']
-    },
-    {
-      title: 'CEO Square',
-      type: 'live',
-      description: 'Angular SSR project for CEO Square company.',
-      live: 'https://ceosquare.vercel.app',
-      github: 'https://github.com/yourusername/ceosquare-angular-ssr',
-      tech: ['Angular SSR']
-    },
-    {
-      title: 'Career Cafe Angular SSR',
-      type: 'live',
-      description: 'Angular SSR project for Career Cafe.',
+      id: '3',
+      title: 'Career Cafe',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Modern career guidance platform built with Angular SSR, featuring interactive career assessments.',
       live: 'https://careercafe.vercel.app',
       github: 'https://github.com/yourusername/careercafe-angular-ssr',
-      tech: ['Angular SSR']
+      image: 'assets/images/careercafe.png',
+      tech: ['Angular SSR', 'TypeScript', 'SCSS', 'Chart.js']
     },
     {
+      id: '4',
+      title: 'Career Cafe API',
+      type: 'Backend',
+      status: 'Live',
+      category: 'production',
+      description: 'Scalable backend service for Career Cafe platform with advanced analytics and reporting.',
+      live: 'https://careercafe-backend.render.com',
+      github: 'https://github.com/yourusername/careercafe-node-backend',
+      tech: ['Node.js', 'Express', 'MongoDB', 'Redis', 'Bull Queue']
+    },
+    {
+      id: '5',
+      title: 'CEO Square',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Premium corporate website for CEO Square with stunning animations and smooth user experience.',
+      live: 'https://ceosquare.vercel.app',
+      github: 'https://github.com/yourusername/ceosquare-angular-ssr',
+      image: 'assets/images/ceosquare.png',
+      tech: ['Angular SSR', 'GSAP', 'Three.js', 'Tailwind CSS']
+    },
+    {
+      id: '6',
+      title: 'CEO Square API',
+      type: 'Backend',
+      status: 'Live',
+      category: 'production',
+      description: 'High-performance backend services for CEO Square website with CMS integration.',
+      live: 'https://ceosquare-backend.render.com',
+      github: 'https://github.com/yourusername/ceosquare-node-backend',
+      tech: ['Node.js', 'Express', 'PostgreSQL', 'Prisma']
+    },
+    {
+      id: '7',
       title: 'Bestract',
-      type: 'live',
-      description: 'Angular SSR project for Bestract company.',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Innovative company website for Bestract with 3D elements and interactive portfolio showcase.',
       live: 'https://bestract.vercel.app',
-      github: 'https://github.com/yourusername/bestrac-backend',
-      tech: ['Angular SSR']
+      github: 'https://github.com/yourusername/bestract-angular',
+      image: 'assets/images/bestract.png',
+      tech: ['Angular SSR', 'Three.js', 'GSAP', 'WebGL']
     },
     {
-      title: 'Flyrad Backend',
-      type: 'backend',
-      description: 'Backend project for Flyrad company.',
-      github: 'https://github.com/yourusername/flyrad-backend',
-      tech: ['Node.js', 'Express']
+      id: '8',
+      title: 'Talent4Startup API',
+      type: 'Backend',
+      status: 'Live',
+      category: 'production',
+      description: 'Comprehensive Node.js backend for Talent4Startup platform with advanced matching algorithms.',
+      github: 'https://github.com/yourusername/talent4startup-backend',
+      tech: ['Node.js', 'Express', 'MongoDB', 'JWT', 'Socket.io']
     },
     {
-      title: 'Old Personal Website',
-      type: 'personal',
-      description: 'My old personal website built with HTML, CSS, and Bootstrap.',
-      live: 'https://your-old-personal-site.vercel.app',
-      github: 'https://github.com/yourusername/old-personal-website',
-      tech: ['HTML', 'CSS', 'Bootstrap']
+      id: '9',
+      title: 'Personal Portfolio',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Modern personal website showcasing projects with advanced animations and smooth transitions.',
+      live: 'https://yourportfolio.vercel.app',
+      github: 'https://github.com/yourusername/personal-portfolio',
+      image: 'assets/images/portfolio.png',
+      tech: ['Angular SSR', 'Tailwind CSS', 'GSAP', 'Framer Motion']
     },
     {
-      title: 'New Personal Website',
-      type: 'personal',
-      description: 'New personal website built with Angular SSR and advanced animations with futuristic style.',
-      live: 'https://your-new-personal-site.vercel.app',
-      github: 'https://github.com/yourusername/new-personal-website',
-      tech: ['Angular SSR', 'Tailwind', 'GSAP']
+      id: '10',
+      title: 'Elclassico Store',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Premium football e-commerce platform with integrated payment system and inventory management.',
+      live: 'https://elclassico.vercel.app',
+      github: 'https://github.com/yourusername/elclassico-frontend',
+      image: 'assets/images/elclassico.png',
+      tech: ['Angular', 'Stripe', 'NgRx', 'Angular Material']
     },
     {
-      title: 'Apple Demo Website',
-      type: 'learning',
-      description: 'Apple website clone using HTML, CSS, and Bootstrap.',
+      id: '11',
+      title: 'Tutoriax Platform',
+      type: 'Frontend',
+      status: 'Live',
+      category: 'production',
+      description: 'Advanced online learning platform with real-time chat, video conferencing, and progress tracking.',
+      live: 'https://tutoriax.vercel.app',
+      github: 'https://github.com/yourusername/tutoriax-frontend',
+      image: 'assets/images/tutoriax.png',
+      tech: ['Angular', 'Socket.io', 'WebRTC', 'RxJS', 'PrimeNG']
+    },
+    {
+      id: '12',
+      title: 'Tutoriax API',
+      type: 'Backend',
+      status: 'Live',
+      category: 'production',
+      description: 'Scalable backend for online learning platform with real-time features and video streaming.',
+      live: 'https://tutoriax-backend.render.com',
+      github: 'https://github.com/yourusername/tutoriax-backend',
+      tech: ['Node.js', 'Socket.io', 'MongoDB', 'FFmpeg', 'AWS S3']
+    },
+
+    // Learning Projects
+    {
+      id: '13',
+      title: 'Netflix UI Clone',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Pixel-perfect Netflix interface clone with movie browsing, search, and video player functionality.',
+      live: 'https://netflix-clone-angular.vercel.app',
+      github: 'https://github.com/yourusername/netflix-ui-angular',
+      image: 'assets/images/netflix-clone.png',
+      tech: ['Angular', 'TMDB API', 'RxJS', 'Angular CDK']
+    },
+    {
+      id: '14',
+      title: 'First Portfolio',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'My first personal website built during learning phase, showcasing basic web development skills.',
+      live: 'https://old-portfolio.vercel.app',
+      github: 'https://github.com/yourusername/old-portfolio',
+      tech: ['HTML5', 'CSS3', 'Bootstrap', 'jQuery']
+    },
+    {
+      id: '15',
+      title: 'KTM Showcase',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Responsive motorcycle showcase website demonstrating modern CSS Grid and Flexbox techniques.',
+      live: 'https://ktm-demo.vercel.app',
+      github: 'https://github.com/yourusername/ktm-demo',
+      tech: ['HTML5', 'CSS Grid', 'Flexbox', 'Vanilla JS']
+    },
+    {
+      id: '16',
+      title: 'Apple Clone',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Apple website recreation focusing on responsive design principles and smooth animations.',
       live: 'https://apple-demo.vercel.app',
       github: 'https://github.com/yourusername/apple-demo',
-      tech: ['HTML', 'CSS', 'Bootstrap']
+      tech: ['HTML5', 'CSS3', 'Bootstrap', 'AOS Library']
     },
     {
-      title: 'SpaceX Demo',
-      type: 'learning',
-      description: 'A demo project to learn HTML and CSS with SpaceX-themed UI.',
+      id: '17',
+      title: 'SpaceX Landing',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Space-themed landing page with parallax effects and interactive elements.',
       live: 'https://spacex-demo.vercel.app',
       github: 'https://github.com/yourusername/spacex-demo',
-      tech: ['HTML', 'CSS']
+      tech: ['HTML5', 'CSS3', 'Vanilla JavaScript', 'GSAP']
     },
     {
+      id: '18',
       title: 'User Management System',
-      type: 'backend',
-      description: 'User management system built with Node.js, MongoDB, and EJS templating.',
+      type: 'Other',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Full-stack user management application with CRUD operations and authentication.',
       github: 'https://github.com/yourusername/user-management-node',
-      tech: ['Node.js', 'MongoDB', 'EJS']
+      tech: ['Node.js', 'MongoDB', 'EJS', 'Passport.js']
     },
     {
-      title: 'Football Ecommerce Platform',
-      type: 'fullstack',
-      description: 'Ecommerce platform for football items using Node.js, MongoDB, Express, and Handlebars/EJS.',
-      live: 'https://your-football-ecommerce.vercel.app',
-      github: 'https://github.com/yourusername/football-ecommerce',
-      tech: ['Node.js', 'Express', 'MongoDB', 'EJS']
-    },
-    {
-      title: 'Course Selling Platform',
-      type: 'fullstack',
-      description: 'Fullstack course selling platform with Angular, Node.js, Express, MongoDB, and Socket.io live chat.',
-      live: 'https://your-course-platform.vercel.app',
-      github: 'https://github.com/yourusername/course-selling-platform',
-      tech: ['Angular', 'Node.js', 'Socket.io', 'MongoDB']
-    },
-    {
-      title: 'Netflix UI Clone',
-      type: 'frontend',
-      description: 'Netflix UI clone built with Angular.',
-      github: 'https://github.com/yourusername/netflix-ui-angular',
-      tech: ['Angular']
-    },
-    {
-      title: 'Mini User Management',
-      type: 'mean-stack',
-      description: 'Mini user management project using MEAN stack.',
-      github: 'https://github.com/yourusername/mini-user-management',
+      id: '19',
+      title: 'MEAN Stack App',
+      type: 'Other',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Complete user management system built with MEAN stack architecture.',
+      github: 'https://github.com/yourusername/mean-user-system',
       tech: ['MongoDB', 'Express', 'Angular', 'Node.js']
     },
     {
-      title: 'Random Password Generator',
-      type: 'mini',
-      description: 'Random password generator built using Angular only.',
+      id: '20',
+      title: 'Password Generator',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Secure password generator with customizable options and strength indicators.',
       github: 'https://github.com/yourusername/angular-password-generator',
-      tech: ['Angular']
+      tech: ['Angular', 'TypeScript', 'Crypto API']
     },
     {
-      title: 'Angular To-Do List',
-      type: 'mini',
-      description: 'Simple to-do list application built with Angular.',
+      id: '21',
+      title: 'Todo Application',
+      type: 'Frontend',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Feature-rich todo application with drag-and-drop, categories, and local storage.',
+      live: 'https://angular-todo-app.vercel.app',
       github: 'https://github.com/yourusername/angular-todo-list',
-      tech: ['Angular']
+      tech: ['Angular', 'NgRx', 'Angular CDK', 'Local Storage']
     },
     {
-      title: 'Data Structures in JavaScript',
-      type: 'learning',
-      description: 'Practice projects implementing data structures using JavaScript basics.',
+      id: '22',
+      title: 'Data Structures Library',
+      type: 'Other',
+      status: 'Completed',
+      category: 'learning',
+      description: 'Comprehensive implementation of data structures and algorithms in JavaScript with tests.',
       github: 'https://github.com/yourusername/js-data-structures',
-      tech: ['JavaScript']
+      tech: ['JavaScript', 'Jest', 'TypeScript', 'Algorithms']
     }
   ];
-
-  ngOnInit() {
+  constructor(private platformService: PlatformService) { }
+  ngOnInit(): void {
     if (this.platformService.isBrowser) {
-      gsap.registerPlugin(ScrollTrigger);
+      this.animateHeader();
+    }
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.animateProjectCards();
+    }, 100);
+  }
 
-      gsap.from('.project-card', {
-        scrollTrigger: {
-          trigger: '.project-card',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        y: 60,
-        scale: 0.95,
-        duration: 1,
-        ease: 'power3.out',
-        stagger: 0.15
-      });
+  get filteredProjects(): Project[] {
+    return this.projects.filter(project => {
+      const matchesCategory = project.category === this.activeCategory;
+      const type = project.type?.toLowerCase() || '';
+
+      let matchesSubFilter = false;
+      if (this.activeSubFilter === 'frontend') {
+        matchesSubFilter = type === 'frontend';
+      } else if (this.activeSubFilter === 'backend') {
+        matchesSubFilter = type === 'backend';
+      } else if (this.activeSubFilter === 'other') {
+        matchesSubFilter = type !== 'frontend' && type !== 'backend';
+      }
+
+      return matchesCategory && matchesSubFilter;
+    });
+  }
+
+  setCategory(category: 'production' | 'learning'): void {
+    this.activeCategory = category;
+    this.activeSubFilter = 'frontend';
+    setTimeout(() => this.animateProjectCards(), 100);
+  }
+
+  setSubFilter(subFilter: string): void {
+    this.activeSubFilter = subFilter;
+    setTimeout(() => this.animateProjectCards(), 100);
+  }
+
+  getBadgeClass(project: Project): string {
+    const baseClasses = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium';
+
+    if (project.category === 'production') {
+      if (project.type.toLowerCase() === 'frontend') {
+        return `${baseClasses} bg-blue-500/20 text-blue-300 border border-blue-500/30`;
+      } else if (project.type.toLowerCase() === 'backend') {
+        return `${baseClasses} bg-green-500/20 text-green-300 border border-green-500/30`;
+      } else {
+        return `${baseClasses} bg-purple-500/20 text-purple-300 border border-purple-500/30`;
+      }
+    } else {
+      if (project.type.toLowerCase() === 'frontend') {
+        return `${baseClasses} bg-cyan-500/20 text-cyan-300 border border-cyan-500/30`;
+      } else {
+        return `${baseClasses} bg-orange-500/20 text-orange-300 border border-orange-500/30`;
+      }
     }
   }
 
+  getStatusClass(status: string): string {
+    const baseClasses = 'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium';
 
+    switch (status.toLowerCase()) {
+      case 'live':
+        return `${baseClasses} bg-green-500/20 text-green-300`;
+      case 'completed':
+        return `${baseClasses} bg-blue-500/20 text-blue-300`;
+      case 'in progress':
+        return `${baseClasses} bg-yellow-500/20 text-yellow-300`;
+      default:
+        return `${baseClasses} bg-gray-500/20 text-gray-300`;
+    }
+  }
+
+  private animateHeader(): void {
+    const header = document.querySelector('.header');
+    if (header) {
+      setTimeout(() => {
+        header.classList.add('animate-in');
+      }, 100);
+    }
+  }
+
+  private animateProjectCards(): void {
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach((card, index) => {
+      card.classList.remove('animate-in');
+      setTimeout(() => {
+        card.classList.add('animate-in');
+      }, index * 50);
+    });
+  }
+
+  openLink(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  trackByProject(index: number, project: Project): string {
+    return project.id;
+  }
 }

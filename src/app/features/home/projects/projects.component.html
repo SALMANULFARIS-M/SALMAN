@@ -1,76 +1,245 @@
+<!-- projects.component.html -->
 <div
-  class="projects-container py-16 px-4 min-h-screen max-h-screen overflow-y-auto bg-gray-900"
+  class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden"
 >
-  <h2
-    class="section-title text-4xl font-bold mb-12 text-center text-yellow-400"
-  >
-    🚀 Projects
-  </h2>
-
-  <div class="flex justify-center gap-4 mb-10">
-    <button (click)="filter = 'all'" class="btn">All</button>
-    <button (click)="filter = 'live'" class="btn">Live</button>
-    <button (click)="filter = 'learning'" class="btn">Learning</button>
-    <button (click)="filter = 'backend'" class="btn">Backend</button>
-    <button (click)="filter = 'personal'" class="btn">Personal</button>
+  <!-- Header Section -->
+  <div class="relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <!-- Main Title with Holographic Effect -->
+      <div class="text-center mb-2">
+        <h1
+          class="text-4xl md:text-6xl font-black bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wider font-mono relative group"
+        >
+          PROJECTS
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10 group-hover:blur-2xl transition-all duration-700"
+          ></div>
+        </h1>
+      </div>
+      <!-- Subtitle -->
+      <p
+        class="text-center text-slate-300 text-xl md:text-2xl font-light tracking-wide mb-2"
+      >
+        <span
+          class="bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent"
+        >
+          Crafting Tomorrow's Digital Experiences
+        </span>
+      </p>
+    </div>
   </div>
 
-  <div
-    class="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
-  >
-    <div
-      *ngFor="let project of projects"
-      class="project-card relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 shadow-lg transition-transform transform hover:scale-105 hover:shadow-yellow-500/20 flex flex-col"
-    >
-      <img
-        *ngIf="project.image"
-        [src]="project.image"
-        [alt]="project.title"
-        class="rounded-xl mb-4 h-40 object-cover w-full shadow-md"
-      />
+ <div class="scrollable-area min-h-0 overflow-y-auto relative custom-scrollbar-container">
+  <!-- Filter Controls -->
+  <div class="flex flex-col items-center gap-y-6" aria-label="Skill Filters">
+    <!-- Main Category Filters -->
+    <div class="flex flex-wrap justify-center gap-2 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50">
+      <button
+        *ngFor="let category of categories"
+        (click)="setCategory(category)"
+        [ngClass]="{
+          'bg-gradient-to-r text-white shadow-lg scale-105': activeCategory === category,
+          'text-slate-400 hover:text-white hover:bg-slate-800/50': activeCategory !== category
+        }"
+        [class]="
+          activeCategory === category
+            ? category === 'production'
+              ? 'from-cyan-500 to-purple-500'
+              : 'from-purple-500 to-pink-500'
+            : ''
+        "
+        [attr.aria-pressed]="activeCategory === category"
+        class="flex flex-col items-center gap-x-2 px-6 py-3 rounded-xl transition-all duration-300 font-semibold tracking-wide"
+      >
+        <span class="uppercase">{{ category }}</span>
+      </button>
+    </div>
 
-      <h3 class="text-xl text-yellow-400 font-semibold mb-2">
-        {{ project.title }}
-      </h3>
+    <!-- Sub Filters -->
+    <div class="flex flex-wrap justify-center mb-4 p-2 bg-slate-900/50 rounded-2xl backdrop-blur-md border border-slate-700/50">
+      <button
+        *ngFor="let sub of ['frontend', 'backend', 'other']"
+        (click)="setSubFilter(sub)"
+        [ngClass]="{
+          'bg-gradient-to-r text-white shadow-md scale-105': activeSubFilter === sub,
+          'text-slate-400 hover:text-white hover:bg-slate-800/50': activeSubFilter !== sub
+        }"
+        [class]="
+          activeSubFilter === sub
+            ? sub === 'frontend'
+              ? 'from-blue-500 to-blue-400'
+              : sub === 'backend'
+              ? 'from-green-500 to-emerald-400'
+              : 'from-purple-500 to-pink-400'
+            : ''
+        "
+        [attr.aria-pressed]="activeSubFilter === sub"
+        class="flex flex-col items-center gap-x-2 px-5 py-2 rounded-xl text-sm transition-all duration-300 font-medium"
+      >
+        <span class="capitalize">{{ sub }}</span>
+      </button>
+    </div>
+  </div>
 
-      <p class="text-sm text-gray-300 mb-4 flex-grow">
-        {{ project.description }}
+  <!-- Projects Grid -->
+  <div class="relative z-10 max-w-7xl mx-auto pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+      <div
+        class="group relative flex flex-col h-full bg-slate-800/20 backdrop-blur-xl border border-slate-700/30 rounded-3xl p-6 hover:border-slate-600/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/10"
+        *ngFor="let project of filteredProjects; trackBy: trackByProject"
+      >
+        <!-- Status Indicator (Top Right) -->
+        <div
+          class="absolute top-4 right-4  flex flex-col items-center gap-x-1 bg-slate-800/70 px-3 py-1 rounded-full text-xs font-medium text-white border border-slate-600/30 shadow"
+        >
+          <div
+            class="w-2 h-2 rounded-full animate-pulse"
+            [ngClass]="{
+              'bg-green-400': project.status.toLowerCase() === 'live',
+              'bg-blue-400': project.status.toLowerCase() === 'completed',
+              'bg-yellow-400': project.status.toLowerCase() === 'in progress',
+              'bg-gray-400':
+                project.status.toLowerCase() !== 'live' &&
+                project.status.toLowerCase() !== 'completed' &&
+                project.status.toLowerCase() !== 'in progress'
+            }"
+          ></div>
+          <span>{{ project.status | titlecase }}</span>
+        </div>
+
+        <!-- Holographic Border -->
+        <div class="absolute -inset-px bg-gradient-to-r from-cyan-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-cyan-500/20 group-hover:via-purple-500/20 group-hover:to-pink-500/20 rounded-3xl transition-all duration-700 -z-10"></div>
+
+        <!-- Image or Placeholder -->
+        <div
+          class="relative mb-4 h-44 rounded-2xl overflow-hidden bg-slate-900/50"
+          *ngIf="project.image; else placeholder"
+        >
+          <img
+            [src]="project.image"
+            [alt]="project.title"
+            class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+        </div>
+
+        <ng-template #placeholder>
+          <div
+            class="relative mb-4 h-44 rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 flex items-center justify-center border border-slate-700/30"
+          >
+            <div class="text-slate-500 text-6xl group-hover:text-slate-400 transition-colors duration-300">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-12 h-12">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21,15 16,10 5,21" />
+              </svg>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Title and Type -->
+        <div class="flex items-start justify-between mb-3">
+          <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors duration-300 tracking-wide font-mono">
+            {{ project.title }}
+          </h3>
+          <span
+            class="px-3 py-1 rounded-full text-xs font-semibold tracking-wider border transition-all duration-300 whitespace-nowrap ml-2"
+            [ngClass]="getBadgeClass(project)"
+          >
+            {{ project.type }}
+          </span>
+        </div>
+
+        <!-- Description -->
+        <p class="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors duration-300">
+          {{ project.description }}
+        </p>
+
+        <!-- Tech Stack -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span
+            class="px-3 py-1 text-xs font-medium bg-slate-700/50 text-slate-300 rounded-lg border border-slate-600/30 hover:border-slate-500/50 hover:bg-slate-700/70 transition-all duration-300 cursor-default"
+            *ngFor="let tech of project.tech"
+          >
+            {{ tech }}
+          </span>
+        </div>
+
+        <!-- Action Buttons -->
+ <div class="flex  gap-x-3 mt-auto">
+          <!-- Live -->
+          <button
+            *ngIf="project.live"
+            class="flex-1 group/btn relative px-3 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 hover:from-cyan-500/30 hover:to-blue-500/30 hover:border-cyan-400/50 hover:text-white transition-all duration-300 overflow-hidden"
+            (click)="openLink(project.live!)"
+          >
+            <span class="relative z-10 justify-center flex items-center gap-x-2">
+              <span>🚀</span><span>Live Demo</span>
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-blue-500/0 group-hover/btn:from-cyan-500/10 group-hover/btn:to-blue-500/10 transition-all duration-300"></div>
+          </button>
+
+          <div
+            *ngIf="!project.live"
+            class="flex-1 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-700/30 border border-slate-600/30 text-slate-500 text-center"
+          >
+            <span class="justify-center flex  items-center gap-x-2">
+              <span>🔒</span><span>No Demo</span>
+            </span>
+          </div>
+
+          <!-- Code -->
+          <button
+            *ngIf="project.github"
+            class="flex-1 group/btn relative px-3 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 text-purple-300 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/50 hover:text-white transition-all duration-300 overflow-hidden"
+            (click)="openLink(project.github!)"
+          >
+            <span class="relative z-10 justify-center flex  items-center gap-x-2">
+              <span>💻</span><span>Code</span>
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-pink-500/0 group-hover/btn:from-purple-500/10 group-hover/btn:to-pink-500/10 transition-all duration-300"></div>
+          </button>
+
+          <div
+            *ngIf="!project.github"
+            class="flex-1 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-700/30 border border-slate-600/30 text-slate-500 text-center"
+          >
+            <span class="justify-center flex items-center gap-x-2">
+              <span>🔐</span><span>Private</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Decorative Corners -->
+        <div class="absolute top-4 left-4 w-1 h-1 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:w-3 group-hover:h-3"></div>
+        <div class="absolute bottom-4 right-4 w-1 h-1 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 group-hover:w-3 group-hover:h-3"></div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="text-center py-20" *ngIf="filteredProjects.length === 0">
+      <div class="text-8xl mb-6 opacity-50">🔍</div>
+      <h3 class="text-2xl font-bold text-white mb-4">No Projects Found</h3>
+      <p class="text-slate-400 text-lg">
+        Try adjusting your filters to discover more projects.
       </p>
-
-      <div class="flex flex-wrap gap-2 mb-4">
-        <span
-          *ngFor="let tech of project.tech"
-          class="bg-gray-700 text-xs text-yellow-300 px-2 py-1 rounded-full"
-        >
-          {{ tech }}
-        </span>
-      </div>
-
-      <div class="flex justify-between items-center mt-auto">
-        <a
-          *ngIf="project.live"
-          [href]="project.live"
-          target="_blank"
-          class="text-sm text-green-400 hover:underline"
-          >🌐 Live</a
-        >
-        <span *ngIf="!project.live" class="text-sm text-gray-600 italic">
-          No Live Demo
-        </span>
-
-        <a
-          *ngIf="project.github"
-          [href]="project.github"
-          target="_blank"
-          class="text-sm text-blue-400 hover:underline"
-          >🧠 GitHub</a
-        >
-        <span *ngIf="!project.github" class="text-sm text-gray-600 italic">
-          No GitHub Repo
-        </span>
-      </div>
     </div>
   </div>
 </div>
 
 
+  <!-- Ambient Background Effects -->
+  <div class="fixed inset-0 pointer-events-none -z-10">
+    <!-- Gradient Orbs -->
+    <div
+      class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-pulse"
+    ></div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000"
+    ></div>
+    <div
+      class="absolute top-1/2 right-1/3 w-64 h-64 bg-pink-500/3 rounded-full blur-3xl animate-pulse delay-2000"
+    ></div>
+  </div>
+</div>

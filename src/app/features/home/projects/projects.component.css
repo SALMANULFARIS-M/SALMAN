@@ -1,26 +1,102 @@
-.projects-container::-webkit-scrollbar {
+
+/* Active Category Button Styles */
+.active-category {
+  @apply bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-400/70 text-white shadow-lg shadow-cyan-400/25;
+}
+
+.active-category::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #06b6d4, #8b5cf6, #ec4899);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+}
+
+/* Active Sub Filter Styles */
+.active-sub {
+  @apply bg-slate-700/70 border-slate-400/50 text-white;
+}
+
+/* Project Card Animation */
+.project-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+.project-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Holographic Text Effect Enhancement */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Custom Badge Classes for getBadgeClass method */
+.badge-production-frontend {
+  @apply bg-blue-500/20 text-blue-300 border-blue-500/30;
+}
+
+.badge-production-backend {
+  @apply bg-green-500/20 text-green-300 border-green-500/30;
+}
+
+.badge-production-other {
+  @apply bg-purple-500/20 text-purple-300 border-purple-500/30;
+}
+
+.badge-learning-frontend {
+  @apply bg-cyan-500/20 text-cyan-300 border-cyan-500/30;
+}
+
+.badge-learning-other {
+  @apply bg-orange-500/20 text-orange-300 border-orange-500/30;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
   width: 8px;
 }
 
-.projects-container::-webkit-scrollbar-thumb {
-  background-color: #facc15; /* yellow-400 */
-  border-radius: 10px;
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
 }
 
-.projects-container::-webkit-scrollbar-track {
-  background-color: #1f2937; /* gray-800 */
-}
-.btn {
-  background-color: #ca8a04; /* Tailwind bg-yellow-600 */
-  color: #fff; /* Tailwind text-white */
-  padding-left: 1rem; /* Tailwind px-4 */
-  padding-right: 1rem;
-  padding-top: 0.5rem; /* Tailwind py-2 */
-  padding-bottom: 0.5rem;
-  border-radius: 0.5rem; /* Tailwind rounded-lg */
-  transition: background-color 0.2s;
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 4px;
 }
 
-.btn:hover {
-  background-color: #a16207; /* Tailwind hover:bg-yellow-700 */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+}
+.custom-scrollbar-container {
+  position: relative; /* Needed for absolute positioning of the track */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain; /* Prevent scroll chaining */
+  max-height: 100vh; /* Or whatever height makes sense */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
