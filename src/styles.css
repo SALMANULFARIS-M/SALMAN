@@ -287,13 +287,12 @@
 
 
 
-
-/* Optional scrollbar hiding */
+/* Optional scrollbar hiding
 ::-webkit-scrollbar {
   display: none;
  -ms-overflow-style: none;
   scrollbar-width: none;
-}
+} */
 .scrollable-area {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;

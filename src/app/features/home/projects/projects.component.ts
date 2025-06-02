@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { PlatformService } from '../../../core/services/platform.service';
 
 interface Project {
@@ -23,7 +23,8 @@ interface Project {
 })
 export class ProjectsComponent implements OnInit, AfterViewInit {
   @ViewChildren('projectCard', { read: ElementRef }) projectCards!: QueryList<ElementRef>;
-
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  scrollPercent: number = 0;
   activeCategory: 'production' | 'learning' = 'production';
   activeSubFilter: string = 'frontend';
   Math = Math;
@@ -188,6 +189,7 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
       type: 'Frontend',
       status: 'Completed',
       category: 'learning',
+      image: 'assets/images/portfolio.png',
       description: 'My first personal website built during learning phase, showcasing basic web development skills.',
       live: 'https://old-portfolio.vercel.app',
       github: 'https://github.com/yourusername/old-portfolio',
@@ -200,6 +202,7 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
       status: 'Completed',
       category: 'learning',
       description: 'Responsive motorcycle showcase website demonstrating modern CSS Grid and Flexbox techniques.',
+      image: 'assets/images/portfolio.png',
       live: 'https://ktm-demo.vercel.app',
       github: 'https://github.com/yourusername/ktm-demo',
       tech: ['HTML5', 'CSS Grid', 'Flexbox', 'Vanilla JS']
@@ -287,8 +290,27 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.animateProjectCards();
+      this.onScroll();
     }, 100);
+const el = this.scrollContainer.nativeElement;
+
+  el.addEventListener('wheel', (e: WheelEvent) => {
+    const atTop = el.scrollTop === 0;
+    const atBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+
+    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+      e.preventDefault(); // prevent being trapped
+      window.scrollBy({ top: e.deltaY, behavior: 'smooth' });
+    }
+  }, { passive: false });
   }
+
+  onScroll(): void {
+  const el = this.scrollContainer.nativeElement;
+  const scrollTop = el.scrollTop;
+  const scrollHeight = el.scrollHeight - el.clientHeight;
+  this.scrollPercent = Math.min(100, (scrollTop / scrollHeight) * 100);
+}
 
   get filteredProjects(): Project[] {
     return this.projects.filter(project => {
