@@ -17,11 +17,15 @@ export class ThreeBackgroundProjectsComponent implements OnInit, AfterViewInit, 
   constructor(private platformService: PlatformService, private ngZone: NgZone, private el: ElementRef) { }
 
   ngOnInit(): void {
-    this.initThreeJS();
+    if (this.platformService.isBrowser) {
+      this.initThreeJS();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.animate();
+    if (this.platformService.isBrowser) {
+      this.animate();
+    }
   }
 
   ngOnDestroy(): void {

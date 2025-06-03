@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { PlatformService } from '../../../core/services/platform.service';
+import { ThreeBackgroundProjectsComponent } from '../../../shared/animations/three-background-projects/three-background-projects.component';
 
 interface Project {
   id: string;
@@ -17,7 +18,7 @@ interface Project {
 
 @Component({
   selector: 'app-projects',
-  imports: [CommonModule],
+  imports: [CommonModule,ThreeBackgroundProjectsComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })

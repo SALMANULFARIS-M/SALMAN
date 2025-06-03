@@ -37,3 +37,13 @@
 :host-context(.browser) .section-card-item {
   opacity: 0;
 }
+.custom-scrollbar-container {
+  position: relative; /* Needed for absolute positioning of the track */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain; /* Prevent scroll chaining */
+  max-height: 100vh; /* Or whatever height makes sense */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
