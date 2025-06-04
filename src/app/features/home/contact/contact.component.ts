@@ -18,16 +18,11 @@ import { ThreeBackgroundContactComponent } from '../../../shared/animations/thre
 
 
 export class ContactComponent implements OnInit, AfterViewInit {
-  @ViewChild('particleCanvas', { static: true }) particleCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('titleRef') titleRef!: ElementRef;
   @ViewChild('formRef') formRef!: ElementRef;
   @ViewChild('socialRef') socialRef!: ElementRef;
 
   contactForm: FormGroup;
-  private scene!: THREE.Scene;
-  private camera!: THREE.PerspectiveCamera;
-  private renderer!: THREE.WebGLRenderer;
-  private particles!: THREE.Points;
 
   constructor(private fb: FormBuilder, private platformService: PlatformService) {
     this.contactForm = this.fb.group({
@@ -79,14 +74,14 @@ export class ContactComponent implements OnInit, AfterViewInit {
   }
 
   private initScrollAnimations(): void {
-    gsap.from(this.socialRef.nativeElement.children, {
-      scrollTrigger: this.socialRef.nativeElement,
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power2.out"
-    });
+    // gsap.from(this.socialRef.nativeElement.children, {
+    //   scrollTrigger: this.socialRef.nativeElement,
+    //   opacity: 0,
+    //   y: 50,
+    //   duration: 1,
+    //   stagger: 0.2,
+    //   ease: "power2.out"
+    // });
   }
 
   onInputFocus(event: Event): void {
