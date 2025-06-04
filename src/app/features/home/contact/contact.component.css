@@ -1,35 +1,249 @@
-.input {
-  width: 100%;
-  background-color: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-radius: 0.5rem;
-  outline: none;
-}
+/* Custom CSS for advanced animations */
+    .holographic-text {
+      background: linear-gradient(45deg, #00d4ff, #7c3aed, #ff006e, #00d4ff);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: holographic 4s ease-in-out infinite;
+      position: relative;
+    }
 
-.input:focus {
-  box-shadow: 0 0 0 2px #facc15;
-  border-color: #facc15;
-}
+    .holographic-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #00d4ff, #7c3aed, #ff006e);
+      filter: blur(20px);
+      opacity: 0.3;
+      animation: glow-pulse 2s ease-in-out infinite alternate;
+    }
 
-.label {
-  position: absolute;
-  left: 1rem;
-  top: 0.5rem;
-  color: rgba(255,255,255,0.6);
-  font-size: 0.875rem;
-  transition: all 0.2s;
-  pointer-events: none;
-  background: transparent;
-}
+    @keyframes holographic {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
 
-.input:focus + .label,
-.input:focus ~ .label {
-  top: -0.75rem;
-  font-size: 0.75rem;
-  color: #facc15;
-}
+    @keyframes glow-pulse {
+      0% { opacity: 0.2; transform: scale(1); }
+      100% { opacity: 0.4; transform: scale(1.05); }
+    }
+
+    .glass-morphism {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+      animation: scan 3s infinite;
+    }
+
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .neural-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .neural-line {
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, #7c3aed, transparent);
+      opacity: 0.3;
+    }
+
+    .neural-line-1 {
+      left: 20%;
+      animation: neural-pulse 4s ease-in-out infinite;
+    }
+
+    .neural-line-2 {
+      left: 50%;
+      animation: neural-pulse 4s ease-in-out infinite 1s;
+    }
+
+    .neural-line-3 {
+      left: 80%;
+      animation: neural-pulse 4s ease-in-out infinite 2s;
+    }
+
+    @keyframes neural-pulse {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.6; }
+    }
+
+    .futuristic-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .futuristic-input:focus {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #00d4ff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    .futuristic-label {
+      position: absolute;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1rem;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .futuristic-input:focus + .futuristic-label,
+    .futuristic-input:not(:placeholder-shown) + .futuristic-label {
+      top: -0.5rem;
+      left: 1rem;
+      font-size: 0.875rem;
+      color: #00d4ff;
+      background: rgba(15, 15, 26, 0.8);
+      padding: 0 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+    .input-border-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 0.75rem;
+      padding: 1px;
+      background: linear-gradient(45deg, transparent, #00d4ff, transparent);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .futuristic-input:focus ~ .input-border-glow {
+      opacity: 1;
+    }
+
+    .quantum-button {
+      position: relative;
+      padding: 1rem 2rem;
+      background: linear-gradient(45deg, #7c3aed, #00d4ff);
+      border: none;
+      border-radius: 0.75rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      transform: perspective(1000px) rotateX(0deg);
+    }
+
+    .quantum-button:hover {
+      transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+    }
+
+    .quantum-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .quantum-button:hover::before {
+      left: 100%;
+    }
+
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      space-y: 0.5rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: white;
+    }
+
+    .social-icon {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .social-link:hover .social-icon {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-link:hover .social-icon::before {
+      opacity: 0.5;
+    }
+
+    .social-label {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover .social-label {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .grid-pattern {
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      width: 100%;
+      height: 100%;
+      animation: grid-move 20s linear infinite;
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
