@@ -1,6 +1,4 @@
-<section
-  class="relative min-h-screen h-auto md:h-screen overflow-y-auto md:overflow-hidden flex flex-col"
->
+<section class="relative min-h-screen h-auto md:h-screen overflow-y-auto md:overflow-hidden flex flex-col">
   <app-three-background-contact></app-three-background-contact>
   <!-- Animated Grid Background -->
   <div class="absolute inset-0 opacity-20">
@@ -8,192 +6,165 @@
   </div>
 
   <!-- Main Content -->
-  <div class="relative z-10 container mx-auto px-4 py-8 md:py-0 flex-1 overflow-y-auto">
+  <div class="relative z-10 container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col">
     <!-- Section Title with Holographic Effect -->
-    <div class="text-center mb-16" #titleRef>
-      <h2
-        class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black mb-4 relative"
-      >
+    <div class="text-center mb-8 md:mb-12" #titleRef>
+      <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-2 relative">
         <span class="holographic-text">CONTACT</span>
         <span class="holographic-glow"></span>
       </h2>
-      <p class="text-xl text-cyan-300 opacity-80 tracking-wider">
+      <p class="text-lg md:text-xl text-cyan-300 opacity-80 tracking-wider">
         Let's build the future together
       </p>
     </div>
 
-    <!-- Contact Form Container -->
-    <div class="max-w-4xl mx-auto" #formRef>
-      <div
-        class="glass-morphism p-8 md:p-12 rounded-3xl relative overflow-hidden"
-      >
-        <!-- Scanning Line Animation -->
-        <div class="scan-line"></div>
+    <!-- Content Container -->
+    <div class="flex flex-col md:flex-row flex-1 gap-8 md:gap-12">
+      <!-- Contact Form Container - Left Side -->
+      <div class="w-full md:w-1/2 flex flex-col justify-center" #formRef>
+        <div class="glass-morphism p-6 sm:p-8 md:p-10 rounded-3xl relative overflow-hidden">
+          <!-- Scanning Line Animation -->
+          <div class="scan-line"></div>
 
-        <!-- Neural Network Lines -->
-        <div class="neural-lines">
-          <div class="neural-line neural-line-1"></div>
-          <div class="neural-line neural-line-2"></div>
-          <div class="neural-line neural-line-3"></div>
+          <!-- Neural Network Lines -->
+          <div class="neural-lines">
+            <div class="neural-line neural-line-1"></div>
+            <div class="neural-line neural-line-2"></div>
+            <div class="neural-line neural-line-3"></div>
+          </div>
+
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Form Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              <!-- Name Input -->
+              <div class="futuristic-input-group" #nameInputRef>
+                <div class="relative">
+                  <input
+                    type="text"
+                    formControlName="name"
+                    class="futuristic-input peer"
+                    placeholder=" "
+                  />
+                  <label class="futuristic-label">
+                    <span class="label-text">Full Name</span>
+                    <span class="label-glow"></span>
+                  </label>
+                  <div class="input-border-glow"></div>
+                </div>
+              </div>
+
+              <!-- Email Input -->
+              <div class="futuristic-input-group" #emailInputRef>
+                <div class="relative">
+                  <input
+                    type="email"
+                    formControlName="email"
+                    class="futuristic-input peer"
+                    placeholder=" "
+                  />
+                  <label class="futuristic-label">
+                    <span class="label-text">Email Address</span>
+                    <span class="label-glow"></span>
+                  </label>
+                  <div class="input-border-glow"></div>
+                </div>
+              </div>
+
+              <!-- Subject Input -->
+              <div class="futuristic-input-group md:col-span-2" #subjectInputRef>
+                <div class="relative">
+                  <input
+                    type="text"
+                    formControlName="subject"
+                    class="futuristic-input peer"
+                    placeholder=" "
+                  />
+                  <label class="futuristic-label">
+                    <span class="label-text">Subject</span>
+                    <span class="label-glow"></span>
+                  </label>
+                  <div class="input-border-glow"></div>
+                </div>
+              </div>
+
+              <!-- Message Textarea -->
+              <div class="futuristic-input-group md:col-span-2" #messageInputRef>
+                <div class="relative">
+                  <textarea
+                    formControlName="message"
+                    rows="5"
+                    class="futuristic-input peer resize-none"
+                    placeholder=" "
+                  ></textarea>
+                  <label class="futuristic-label">
+                    <span class="label-text">Your Message</span>
+                    <span class="label-glow"></span>
+                  </label>
+                  <div class="input-border-glow"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center pt-6">
+              <button
+                type="submit"
+                class="quantum-button group relative"
+                #submitBtnRef
+              >
+                <span class="relative z-10 flex items-center space-x-3">
+                  <span class="text-lg font-semibold">Send Message</span>
+                  <svg
+                    class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    ></path>
+                  </svg>
+                </span>
+                <div class="quantum-particles"></div>
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
 
-        <form
-          [formGroup]="contactForm"
-          (ngSubmit)="onSubmit()"
-          class="space-y-8"
-        >
-          <!-- Form Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Name Input -->
-            <div class="futuristic-input-group" #nameInputRef>
-              <div class="relative">
-                <input
-                  type="text"
-                  formControlName="name"
-                  class="futuristic-input peer"
-                  placeholder=" "
-                  (focus)="onInputFocus($event)"
-                  (blur)="onInputBlur($event)"
-                />
-                <label class="futuristic-label">
-                  <span class="label-text">Full Name</span>
-                  <span class="label-glow"></span>
-                </label>
-                <div class="input-border-glow"></div>
+      <!-- Social Links - Right Side -->
+      <div class="w-full md:w-1/2 flex flex-col items-center justify-center" #socialRef>
+        <div class="glass-morphism p-8 rounded-3xl w-full max-w-md">
+          <h3 class="text-2xl font-bold mb-8 text-cyan-300 text-center">Connect With Me</h3>
+          <div class="flex justify-center space-x-6 md:space-x-8">
+            <a href="#" class="social-link group">
+              <div class="social-icon bg-gradient-to-r from-purple-500 to-pink-500">
+                <lucide-icon name="github" class="w-6 h-6"></lucide-icon>
               </div>
-            </div>
+              <span class="social-label">GitHub</span>
+            </a>
 
-            <!-- Email Input -->
-            <div class="futuristic-input-group" #emailInputRef>
-              <div class="relative">
-                <input
-                  type="email"
-                  formControlName="email"
-                  class="futuristic-input peer"
-                  placeholder=" "
-                  (focus)="onInputFocus($event)"
-                  (blur)="onInputBlur($event)"
-                />
-                <label class="futuristic-label">
-                  <span class="label-text">Email Address</span>
-                  <span class="label-glow"></span>
-                </label>
-                <div class="input-border-glow"></div>
+            <a href="#" class="social-link group">
+              <div class="social-icon bg-gradient-to-r from-blue-500 to-cyan-500">
+                <lucide-icon name="linkedin" class="w-6 h-6"></lucide-icon>
               </div>
-            </div>
+              <span class="social-label">LinkedIn</span>
+            </a>
 
-            <!-- Subject Input -->
-            <div class="futuristic-input-group md:col-span-2" #subjectInputRef>
-              <div class="relative">
-                <input
-                  type="text"
-                  formControlName="subject"
-                  class="futuristic-input peer"
-                  placeholder=" "
-                  (focus)="onInputFocus($event)"
-                  (blur)="onInputBlur($event)"
-                />
-                <label class="futuristic-label">
-                  <span class="label-text">Subject</span>
-                  <span class="label-glow"></span>
-                </label>
-                <div class="input-border-glow"></div>
+            <a href="#" class="social-link group">
+              <div class="social-icon bg-gradient-to-r from-green-500 to-teal-500">
+                <lucide-icon name="mail" class="w-6 h-6"></lucide-icon>
               </div>
-            </div>
-
-            <!-- Message Textarea -->
-            <div class="futuristic-input-group md:col-span-2" #messageInputRef>
-              <div class="relative">
-                <textarea
-                  formControlName="message"
-                  rows="6"
-                  class="futuristic-input peer resize-none"
-                  placeholder=" "
-                  (focus)="onInputFocus($event)"
-                  (blur)="onInputBlur($event)"
-                ></textarea>
-                <label class="futuristic-label">
-                  <span class="label-text">Your Message</span>
-                  <span class="label-glow"></span>
-                </label>
-                <div class="input-border-glow"></div>
-              </div>
-            </div>
+              <span class="social-label">Email</span>
+            </a>
           </div>
-
-          <!-- Submit Button -->
-          <div class="flex justify-center pt-8">
-            <button
-              type="submit"
-              class="quantum-button group relative"
-              #submitBtnRef
-              (mouseenter)="onButtonHover($event)"
-              (mouseleave)="onButtonLeave($event)"
-            >
-              <span class="relative z-10 flex items-center space-x-3">
-                <span class="text-lg font-semibold">Send Message</span>
-                <svg
-                  class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"
-                  ></path>
-                </svg>
-              </span>
-              <div class="quantum-particles"></div>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
 
-    <!-- Social Links -->
-   <div class="text-center mt-16" #socialRef>
-  <h3 class="text-2xl font-bold mb-8 text-cyan-300">Connect With Me</h3>
-  <div class="flex justify-center space-x-8">
-    <a
-      href="#"
-      class="social-link group"
-      (mouseenter)="onSocialHover($event)"
-      (mouseleave)="onSocialLeave($event)"
-    >
-      <div class="social-icon bg-gradient-to-r from-purple-500 to-pink-500">
-        <lucide-icon name="github" class="w-6 h-6"></lucide-icon>
-      </div>
-      <span class="social-label">GitHub</span>
-    </a>
-
-    <a
-      href="#"
-      class="social-link group"
-      (mouseenter)="onSocialHover($event)"
-      (mouseleave)="onSocialLeave($event)"
-    >
-      <div class="social-icon bg-gradient-to-r from-blue-500 to-cyan-500">
-        <lucide-icon name="linkedin" class="w-6 h-6"></lucide-icon>
-      </div>
-      <span class="social-label">LinkedIn</span>
-    </a>
-
-    <a
-      href="#"
-      class="social-link group"
-      (mouseenter)="onSocialHover($event)"
-      (mouseleave)="onSocialLeave($event)"
-    >
-      <div class="social-icon bg-gradient-to-r from-green-500 to-teal-500">
-        <lucide-icon name="mail" class="w-6 h-6"></lucide-icon>
-      </div>
-      <span class="social-label">Email</span>
-    </a>
-  </div>
-</div>
-    <app-footer></app-footer>
+    <app-footer class="mt-auto"></app-footer>
   </div>
 </section>

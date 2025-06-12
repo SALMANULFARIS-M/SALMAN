@@ -26,10 +26,10 @@ export class HomeComponent {
   validSections = ['about', 'skills', 'projects', 'contact'];
 
   sections = [
-    { name: 'Hero', path: '', icon: 'home', component: HeroComponent },
-    { name: 'About', path: 'about', icon: 'user', component: AboutSkillsComponent },
-    { name: 'Skills', path: 'skills', icon: 'badge-check', component: SkillsComponent },
-    { name: 'Projects', path: 'projects', icon: 'folderGit2', component: ProjectsComponent },
+    // { name: 'Hero', path: '', icon: 'home', component: HeroComponent },
+    // { name: 'About', path: 'about', icon: 'user', component: AboutSkillsComponent },
+    // { name: 'Skills', path: 'skills', icon: 'badge-check', component: SkillsComponent },
+    // { name: 'Projects', path: 'projects', icon: 'folderGit2', component: ProjectsComponent },
     { name: 'Contact', path: 'contact', icon: 'contact', component: ContactComponent },
   ];
 

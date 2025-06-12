@@ -2,11 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PlatformService } from '../../../core/services/platform.service';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { FooterComponent } from '../../../shared/components/footer/footer.component';
-import * as THREE from 'three';
 import { ThreeBackgroundContactComponent } from '../../../shared/animations/three-background-contact/three-background-contact.component';
 
 @Component({
@@ -43,7 +41,6 @@ export class ContactComponent implements OnInit, AfterViewInit {
       this.initScrollAnimations();
     }
   }
-
 
 
 
@@ -86,11 +83,11 @@ export class ContactComponent implements OnInit, AfterViewInit {
 
   onInputFocus(event: Event): void {
     const input = event.target as HTMLInputElement;
-    gsap.to(input, {
-      scale: 1.02,
-      duration: 0.3,
-      ease: "power2.out"
-    });
+    // gsap.to(input, {
+    //   scale: 1.02,
+    //   duration: 0.3,
+    //   ease: "power2.out"
+    // });
   }
 
   onInputBlur(event: Event): void {
